@@ -1,17 +1,19 @@
 Summary:	Multiplayer roguelike game server
 Summary(pl):	Serwer gry roguelike dla wielu graczy
 Name:		crossfire
-Version:	1.0.0
+Version:	1.1.0
 Release:	1
 License:	GPL
 Group:		Applications/Games
-Source0:	ftp://ftp.scruz.net/users/mwedel/public/%{name}-%{version}.tar.bz2
-Source1:	%{name}.init
-Source2:	%{name}.sysconfig
-Source3:	%{name}.logrotate
+Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/crossfire/%{name}-%{version}.tar.bz2
+Source1:	ftp://ftp.sourceforge.net/pub/sourceforge/crossfire/%{name}-%{version}-arch.tar.bz2
+Source2:	%{name}.init
+Source3:	%{name}.sysconfig
+Source4:	%{name}.logrotate
 Patch0:		%{name}-DESTDIR.patch
 Patch1:		%{name}-directories.patch
 Patch2:		%{name}-tmp_maps.patch
+Patch3:		%{name}-faces.patch
 URL:		http://crossfire.real-time.com/
 BuildRequires:	XFree86-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -47,13 +49,28 @@ Crossfire map editor.
 %description editor -l pl
 Edytor map crossfire.
 
+%package doc
+Summary:	Crossfire game documentation
+Summary(pl):	Dokumentacja gry crossfire
+Group:		Applications/Games
+
+%description doc
+Crossfire documentation for players. Includes handbook and spoiler.
+
+%description doc -l pl
+Dokumentacja dla graczy Crossfire. Zawiera podrêczniek oraz spoiler.
+
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
+cd lib
+bunzip2 -c %{SOURCE1} | tar xf -
 
 %build
+autoconf
 %configure
 %{__make}
 
@@ -64,11 +81,17 @@ install -d $RPM_BUILD_ROOT%{_localstatedir}/%{name}/tmp
 %{__make} install DESTDIR="$RPM_BUILD_ROOT"
 mv -f $RPM_BUILD_ROOT%{_datadir}/%{name}/{ban_file,settings,dm_file,motd,forbid} \
 	$RPM_BUILD_ROOT/etc/%{name}
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
 touch $RPM_BUILD_ROOT/var/log/crossfire
-
+rm doc/Developers/Makefile*
+gzip -9nf CHANGES CREDITS DEVELOPERS README TODO \
+ doc/{PlayerStats,RunTimeCommands,SurvivalGuide,alchemy.doc,experience,multigod} \
+ doc/{skills.doc,spell-paths,spellcasters_guide_to_runes,spells,spell_params.doc} \
+ doc/{metaserver,Crossedit.doc,Developers/*} doc/*.ps \
+ crossedit/doc/*.doc
+ 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -90,9 +113,10 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGES CREDITS DEVELOPERS DONE README TODO 
-%doc doc/{PlayerStats,RunTimeCommands,SurvivalGuide,alchemy.doc,experience,multigod}
-%doc doc/{skills.doc,spell-paths,spellcasters_guide_to_runes,spells}
+%doc *.gz
+%doc doc/{alchemy.doc*,experience*,multigod*,spell_params.doc*} 
+%doc doc/{spell-paths*,spellcasters_guide_to_runes*,metaserver*} 
+%doc doc/Developers
 %attr(750,root,games) %{_bindir}/crossfire
 %attr(750,root,games) %{_bindir}/random_map
 %dir %attr(750,root,games) %{_datadir}/crossfire
@@ -114,6 +138,11 @@ fi
 
 %files editor
 %defattr(644,root,root,755)
-%doc doc/{Crossedit.doc,RandomMaps.doc,Styles.doc,mapguide,mapmakers_guide_to_runes,teleporter.doc}
+%doc doc/{Crossedit.doc*} crossedit/doc/*.doc*
 %attr(755,root,root) %{_bindir}/crossedit
 %{_mandir}/man?/crossedit*
+
+%files doc
+%doc doc/{handbook.ps*,spoiler.ps*}
+%doc doc/{PlayerStats*,RunTimeCommands*,SurvivalGuide*} 
+%doc doc/{skills.doc*,spellcasters_guide_to_runes*,spells*} 

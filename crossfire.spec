@@ -15,11 +15,11 @@ Patch2:		%{name}-tmp_maps.patch
 Patch3:		%{name}-python.patch
 URL:		http://crossfire.real-time.com/
 BuildRequires:	XFree86-devel
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Prereq:		/sbin/chkconfig
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_prefix	/usr/X11R6
-%define		_localstatedir /var/lib
+%define		_prefix		/usr/X11R6
+%define		_localstatedir	/var/lib
 
 %description 
 This is a multiplayer graphical arcade and adventure game made for the
@@ -75,16 +75,21 @@ autoconf
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/var/log,/etc/{sysconfig,%{name},logrotate.d},/etc/rc.d/init.d}
-install -d $RPM_BUILD_ROOT%{_localstatedir}/%{name}/{tmp,maps}
+install -d $RPM_BUILD_ROOT{/var/log,/etc/{sysconfig,%{name},logrotate.d},/etc/rc.d/init.d} \
+	$RPM_BUILD_ROOT%{_localstatedir}/%{name}/{tmp,maps}
+
 %{__make} install DESTDIR="$RPM_BUILD_ROOT"
+
 mv -f $RPM_BUILD_ROOT%{_datadir}/%{name}/{ban_file,settings,dm_file,motd,forbid} \
 	$RPM_BUILD_ROOT/etc/%{name}
+
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
-touch $RPM_BUILD_ROOT%{_localstatedir}/%{name}/clockdata
-touch $RPM_BUILD_ROOT/var/log/crossfire
+
+touch $RPM_BUILD_ROOT%{_localstatedir}/%{name}/clockdata \
+	$RPM_BUILD_ROOT/var/log/crossfire
+
 rm doc/Developers/Makefile*
  
 %clean

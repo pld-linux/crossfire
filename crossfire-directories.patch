@@ -1,7 +1,7 @@
-diff -durN crossfire-0.98.0.orig/include/config.h crossfire-0.98.0/include/config.h
---- crossfire-0.98.0.orig/include/config.h	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/include/config.h	Tue Apr 17 17:10:55 2001
-@@ -680,7 +680,7 @@
+diff -durN crossfire-1.1.0.orig/include/config.h crossfire-1.1.0/include/config.h
+--- crossfire-1.1.0.orig/include/config.h	Wed Mar 20 07:36:53 2002
++++ crossfire-1.1.0/include/config.h	Fri Mar 22 13:23:04 2002
+@@ -654,7 +654,7 @@
  #ifdef WIN32 /* change define path */
  #define LOGFILE "tmp\\cross.log"
  #else 
@@ -10,7 +10,7 @@ diff -durN crossfire-0.98.0.orig/include/config.h crossfire-0.98.0/include/confi
  #endif
  #endif
  
-@@ -830,7 +830,7 @@
+@@ -821,7 +821,7 @@
  #ifdef WIN32 /* change define path tmp */
  #define TMPDIR "tmp"
  #else
@@ -19,10 +19,10 @@ diff -durN crossfire-0.98.0.orig/include/config.h crossfire-0.98.0/include/confi
  #endif
  
  
-diff -durN crossfire-0.98.0.orig/server/ban.c crossfire-0.98.0/server/ban.c
---- crossfire-0.98.0.orig/server/ban.c	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/server/ban.c	Tue Apr 17 17:12:17 2001
-@@ -33,7 +33,7 @@
+diff -durN crossfire-1.1.0.orig/server/ban.c crossfire-1.1.0/server/ban.c
+--- crossfire-1.1.0.orig/server/ban.c	Wed Mar 20 07:36:53 2002
++++ crossfire-1.1.0/server/ban.c	Fri Mar 22 13:23:04 2002
+@@ -34,7 +34,7 @@
    int           num1;
    int   Hits=0;                 /* Hits==2 means we're banned */
  
@@ -31,10 +31,10 @@ diff -durN crossfire-0.98.0.orig/server/ban.c crossfire-0.98.0/server/ban.c
    if ((bannedfile = fopen(buf, "r")) == NULL) {
      LOG (llevDebug, "Could not find file Banned file.\n");
      return(0);
-diff -durN crossfire-0.98.0.orig/server/c_wiz.c crossfire-0.98.0/server/c_wiz.c
---- crossfire-0.98.0.orig/server/c_wiz.c	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/server/c_wiz.c	Tue Apr 17 17:12:50 2001
-@@ -712,7 +712,7 @@
+diff -durN crossfire-1.1.0.orig/server/c_wiz.c crossfire-1.1.0/server/c_wiz.c
+--- crossfire-1.1.0.orig/server/c_wiz.c	Wed Mar 20 07:36:53 2002
++++ crossfire-1.1.0/server/c_wiz.c	Fri Mar 22 13:23:04 2002
+@@ -889,7 +889,7 @@
    *pl_name=op->name?op->name:"*";
  #endif
  
@@ -43,10 +43,10 @@ diff -durN crossfire-0.98.0.orig/server/c_wiz.c crossfire-0.98.0/server/c_wiz.c
    if ((dmfile = fopen(buf, "r")) == NULL) {
      LOG (llevDebug, "Could not find DM file.\n");
      return(0);
-diff -durN crossfire-0.98.0.orig/server/init.c crossfire-0.98.0/server/init.c
---- crossfire-0.98.0.orig/server/init.c	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/server/init.c	Tue Apr 17 17:15:20 2001
-@@ -222,7 +222,7 @@
+diff -durN crossfire-1.1.0.orig/server/init.c crossfire-1.1.0/server/init.c
+--- crossfire-1.1.0.orig/server/init.c	Wed Mar 20 07:36:53 2002
++++ crossfire-1.1.0/server/init.c	Fri Mar 22 13:23:04 2002
+@@ -225,7 +225,7 @@
      int	has_val,comp;
      FILE    *fp;
  
@@ -55,7 +55,7 @@ diff -durN crossfire-0.98.0.orig/server/init.c crossfire-0.98.0/server/init.c
      /* We don't require a settings file at current time, but down the road,
       * there will probably be so many values that not having a settings file
       * will not be a good thing.
-@@ -445,7 +445,7 @@
+@@ -504,7 +504,7 @@
    int comp;
  
  #ifdef SHUTDOWN_FILE
@@ -64,7 +64,7 @@ diff -durN crossfire-0.98.0.orig/server/init.c crossfire-0.98.0/server/init.c
    if ((fp = open_and_uncompress(buf, 0, &comp)) != NULL) {
      while (fgets(buf, MAX_BUF-1, fp) != NULL)
        printf("%s", buf);
-@@ -499,10 +499,10 @@
+@@ -558,10 +558,10 @@
    printf("Datadir:\t\t%s\n",settings.datadir);
    printf("Localdir:\t\t%s\n",settings.localdir);
  #ifdef PERM_FILE
@@ -77,18 +77,18 @@ diff -durN crossfire-0.98.0.orig/server/init.c crossfire-0.98.0/server/init.c
  #endif
    printf("Save player:\t<true>\n");
    printf("Save mode:\t%4.4o\n",SAVE_MODE);
-diff -durN crossfire-0.98.0.orig/server/main.c crossfire-0.98.0/server/main.c
---- crossfire-0.98.0.orig/server/main.c	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/server/main.c	Tue Apr 17 17:14:36 2001
-@@ -29,6 +29,7 @@
- #include <version.h>
+diff -durN crossfire-1.1.0.orig/server/main.c crossfire-1.1.0/server/main.c
+--- crossfire-1.1.0.orig/server/main.c	Wed Mar 20 07:36:53 2002
++++ crossfire-1.1.0/server/main.c	Fri Mar 22 13:23:43 2002
+@@ -30,6 +30,7 @@
  #include <global.h>
  #include <object.h>
+ #include <tod.h>
 +#include <config.h>
  
  #ifdef HAVE_DES_H
  #include <des.h>
-@@ -961,7 +962,7 @@
+@@ -1043,7 +1044,7 @@
      clock = time (NULL);
      tm = (struct tm *) localtime (&clock);
  
@@ -97,10 +97,10 @@ diff -durN crossfire-0.98.0.orig/server/main.c crossfire-0.98.0/server/main.c
      if ((fp = open_and_uncompress(buf, 0, &comp)) == NULL)
  	return 0;
  
-diff -durN crossfire-0.98.0.orig/server/player.c crossfire-0.98.0/server/player.c
---- crossfire-0.98.0.orig/server/player.c	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/server/player.c	Tue Apr 17 17:13:33 2001
-@@ -46,7 +46,7 @@
+diff -durN crossfire-1.1.0.orig/server/player.c crossfire-1.1.0/server/player.c
+--- crossfire-1.1.0.orig/server/player.c	Wed Mar 20 07:36:53 2002
++++ crossfire-1.1.0/server/player.c	Fri Mar 22 13:23:04 2002
+@@ -57,7 +57,7 @@
    FILE *fp;
    int comp;
  

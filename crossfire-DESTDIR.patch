@@ -1,52 +1,38 @@
-diff -durN crossfire-0.98.0.orig/Makefile.in crossfire-0.98.0/Makefile.in
---- crossfire-0.98.0.orig/Makefile.in	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/Makefile.in	Tue Apr 17 09:34:56 2001
-@@ -124,7 +124,7 @@
+--- crossfire-1.3.0/random_maps/Makefile.in.wiget	Tue Jul  2 01:18:12 2002
++++ crossfire-1.3.0/random_maps/Makefile.in	Mon Jul  8 21:19:04 2002
+@@ -125,10 +125,10 @@
+ 	@echo $(SRCS) > .patchlist
  
- install::
- 	@if [ ! -d ${prefix} ]; then \
--		$(MKDIR) -p ${prefix}; \
-+		$(MKDIR) -p $(DESTDIR)${prefix}; \
- 	fi
- 	@for dir in $(SUBDIRS); \
- 	do \
-diff -durN crossfire-0.98.0.orig/crossedit/Makefile.in crossfire-0.98.0/crossedit/Makefile.in
---- crossfire-0.98.0.orig/crossedit/Makefile.in	Sun Apr  8 07:49:35 2001
-+++ crossfire-0.98.0/crossedit/Makefile.in	Tue Apr 17 09:34:56 2001
-@@ -151,7 +151,7 @@
- 
- 
- install:: crossedit
+ install:: random_map
 -	@if [ ! -d ${bindir} ]; then \
 -		$(MKDIR) -p ${bindir}; \
 +	@if [ ! -d $(DESTDIR)${bindir} ]; then \
 +		$(MKDIR) -p $(DESTDIR)${bindir}; \
  	fi
--	$(INSTALL) crossedit ${bindir}/crossedit
-+	$(INSTALL) crossedit $(DESTDIR)${bindir}/crossedit
-diff -durN crossfire-0.98.0.orig/doc/Makefile.in crossfire-0.98.0/doc/Makefile.in
---- crossfire-0.98.0.orig/doc/Makefile.in	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/doc/Makefile.in	Tue Apr 17 09:34:56 2001
-@@ -76,8 +76,8 @@
- 	$(RM) -rf $(DTOP)
+-	$(INSTALL) random_map ${bindir}/random_map
++	$(INSTALL) random_map $(DESTDIR)${bindir}/random_map
  
- install::
--	@if [ ! -d $(MAN1) ]; then \
--		$(MKDIR) -p $(MAN1); \
-+	@if [ ! -d $(DESTDIR)$(MAN1) ]; then \
-+		$(MKDIR) -p $(DESTDIR)$(MAN1); \
+ 
+ 
+--- crossfire-1.3.0/server/Makefile.in.wiget	Tue Jul  2 01:18:12 2002
++++ crossfire-1.3.0/server/Makefile.in	Mon Jul  8 21:19:04 2002
+@@ -139,7 +139,7 @@
+ 	@echo $(SRCS) > .patchlist
+ 
+ install:: crossfire
+-	@if [ ! -d ${bindir} ]; then \
+-		$(MKDIR) -p ${bindir}; \
++	@if [ ! -d $(DESTDIR)${bindir} ]; then \
++		$(MKDIR) -p $(DESTDIR)${bindir}; \
  	fi
--	$(INSTALL) $(srcdir)/crossedit.man $(MAN1)/crossedit.$(MANSUFFIX)
--	$(INSTALL) $(srcdir)/crossfire.man $(MAN1)/crossfire.$(MANSUFFIX)
-+	$(INSTALL) $(srcdir)/crossedit.man $(DESTDIR)$(MAN1)/crossedit.$(MANSUFFIX)
-+	$(INSTALL) $(srcdir)/crossfire.man $(DESTDIR)$(MAN1)/crossfire.$(MANSUFFIX)
-diff -durN crossfire-0.98.0.orig/lib/Makefile.in crossfire-0.98.0/lib/Makefile.in
---- crossfire-0.98.0.orig/lib/Makefile.in	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/lib/Makefile.in	Tue Apr 17 09:41:10 2001
-@@ -110,43 +110,43 @@
+-	$(INSTALL) crossfire ${bindir}/crossfire
++	$(INSTALL) crossfire $(DESTDIR)${bindir}/crossfire
+--- crossfire-1.3.0/lib/Makefile.in.wiget	Tue Jul  2 01:18:12 2002
++++ crossfire-1.3.0/lib/Makefile.in	Mon Jul  8 21:25:19 2002
+@@ -131,58 +131,58 @@
  	make collect
  
- install:: archetypes bmaps.paths crossfire.xbm crossfire.xpm crossfire.png animations collect.pl xpmtopix.pl util.pl
+ install:: archetypes bmaps.paths crossfire.0 faces animations collect.pl util.pl
 -	@if [ ! -d $(datadir) ]; then \
 -		$(MKDIR) -p $(datadir); \
 +	@if [ ! -d $(DESTDIR)$(datadir) ]; then \
@@ -58,10 +44,10 @@ diff -durN crossfire-0.98.0.orig/lib/Makefile.in crossfire-0.98.0/lib/Makefile.i
 +		$(MKDIR) -p $(DESTDIR)$(localdir); \
  	fi
  
--	if [ ! -d $(datadir)/help ]; then \
+-	@if [ ! -d $(datadir)/help ]; then \
 -		echo "Creating directory $(datadir)/help"; \
 -		$(MKDIR) -p $(datadir)/help; \
-+	if [ ! -d $(DESTDIR)$(datadir)/help ]; then \
++	@if [ ! -d $(DESTDIR)$(datadir)/help ]; then \
 +		echo "Creating directory $(DESTDIR)$(datadir)/help"; \
 +		$(MKDIR) -p $(DESTDIR)$(datadir)/help; \
  	fi;
@@ -69,6 +55,18 @@ diff -durN crossfire-0.98.0.orig/lib/Makefile.in crossfire-0.98.0/lib/Makefile.i
  	    echo "Installing $$i"; \
 -	    $(INSTALL) $(INSTALLFLAGS) $$i $(datadir)/help; \
 +	    $(INSTALL) $(INSTALLFLAGS) $$i $(DESTDIR)$(datadir)/help; \
+ 	done
+-	@if [ ! -d $(datadir)/wizhelp ]; then \
+-		echo "Creating directory $(datadir)/wizhelp"; \
+-		$(MKDIR) -p $(datadir)/wizhelp; \
++	@if [ ! -d $(DESTDIR)$(datadir)/wizhelp ]; then \
++		echo "Creating directory $(DESTDIR)$(datadir)/wizhelp"; \
++		$(MKDIR) -p $(DESTDIR)$(datadir)/wizhelp; \
+ 	fi;
+ 	@for i in $(FILES_WIZHELP); do \
+ 	    echo "Installing $$i"; \
+-	    $(INSTALL) $(INSTALLFLAGS) $$i $(datadir)/wizhelp; \
++	    $(INSTALL) $(INSTALLFLAGS) $$i $(DESTDIR)$(datadir)/wizhelp; \
  	done
  	@for i in $(INSTALLFILES); do \
  	    echo "Installing $$i"; \
@@ -88,6 +86,15 @@ diff -durN crossfire-0.98.0.orig/lib/Makefile.in crossfire-0.98.0/lib/Makefile.i
 +		$(INSTALL) $(INSTALLFLAGS) settings $(DESTDIR)$(datadir); \
  	fi
  
+ 	@for i in $(INSTALLNEWFILES); do \
+-	    if [ ! -f $(datadir)/$$i ]; then \
++	    if [ ! -f $(DESTDIR)$(datadir)/$$i ]; then \
+ 		    echo "Installing $$i"; \
+-		    $(INSTALL) $(INSTALLFLAGS)  $$i $(datadir); \
++		    $(INSTALL) $(INSTALLFLAGS)  $$i $(DESTDIR)$(datadir); \
+ 	    fi \
+ 	done
+ 
 -	touch $(localdir)/highscore
 -	touch $(localdir)/bookarch
 -	touch $(localdir)/temp.maps
@@ -105,41 +112,9 @@ diff -durN crossfire-0.98.0.orig/lib/Makefile.in crossfire-0.98.0/lib/Makefile.i
  	    fi; \
  	done
  
-diff -durN crossfire-0.98.0.orig/random_maps/Makefile.in crossfire-0.98.0/random_maps/Makefile.in
---- crossfire-0.98.0.orig/random_maps/Makefile.in	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/random_maps/Makefile.in	Tue Apr 17 09:34:56 2001
-@@ -122,10 +122,10 @@
- 	@echo $(SRCS) > .patchlist
- 
- install:: random_map
--	@if [ ! -d ${bindir} ]; then \
--		$(MKDIR) -p ${bindir}; \
-+	@if [ ! -d $(DESTDIR)${bindir} ]; then \
-+		$(MKDIR) -p $(DESTDIR)${bindir}; \
- 	fi
--	$(INSTALL) random_map ${bindir}/random_map
-+	$(INSTALL) random_map $(DESTDIR)${bindir}/random_map
- 
- 
- 
-diff -durN crossfire-0.98.0.orig/server/Makefile.in crossfire-0.98.0/server/Makefile.in
---- crossfire-0.98.0.orig/server/Makefile.in	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/server/Makefile.in	Tue Apr 17 09:34:56 2001
-@@ -139,7 +139,7 @@
- 	@echo $(SRCS) > .patchlist
- 
- install:: crossfire
--	@if [ ! -d ${bindir} ]; then \
--		$(MKDIR) -p ${bindir}; \
-+	@if [ ! -d $(DESTDIR)${bindir} ]; then \
-+		$(MKDIR) -p $(DESTDIR)${bindir}; \
- 	fi
--	$(INSTALL) crossfire ${bindir}/crossfire
-+	$(INSTALL) crossfire $(DESTDIR)${bindir}/crossfire
-diff -durN crossfire-0.98.0.orig/utils/Makefile.in crossfire-0.98.0/utils/Makefile.in
---- crossfire-0.98.0.orig/utils/Makefile.in	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/utils/Makefile.in	Tue Apr 17 09:34:56 2001
-@@ -20,20 +20,20 @@
+--- crossfire-1.3.0/utils/Makefile.in.wiget	Tue Jul  2 01:18:21 2002
++++ crossfire-1.3.0/utils/Makefile.in	Mon Jul  8 21:27:34 2002
+@@ -20,22 +20,22 @@
  	$(DEPEND) $(DEPENDFLAGS) -- $(ALLDEFINES) $(DEPEND_DEFINES) -- $(SRCS)
  
  install:
@@ -154,22 +129,84 @@ diff -durN crossfire-0.98.0.orig/utils/Makefile.in crossfire-0.98.0/utils/Makefi
 -	rm -f $(bindir)/crossloop.pl
 -	sed s%BINDIR%$(bindir)%g <crossloop.pl >$(bindir)/crossloop.pl
 -	chmod 755 $(bindir)/crossloop.pl
--	rm -f $(C_BINDIR)/crossloop
+-	rm -f $(bindir)/crossloop
 -	sed s%BINDIR%$(bindir)%g <crossloop >$(bindir)/crossloop
 -	chmod 755 $(bindir)/crossloop
 -	$(INSTALL) $(INSTALLFLAGS) mktable.script $(bindir)/mktable
 -	$(INSTALL) $(INSTALLFLAGS) add_throw.perl $(bindir)/add_throw
+-	@if [ ! -f $(bindir)/crossloop.web ]; then \
+-		$(INSTALL) $(INSTALLFLAGS) crossloop.web $(bindir)/crossloop.web; \
 +	rm -f $(DESTDIR)$(bindir)/flushlocks
 +	sed s%xxxx%$(libdir)%g <flushlocks > $(DESTDIR)$(bindir)/flushlocks
 +	chmod 755 $(DESTDIR)$(bindir)/flushlocks
 +	rm -f $(DESTDIR)$(bindir)/crossloop.pl
 +	sed s%BINDIR%$(bindir)%g <crossloop.pl >$(DESTDIR)$(bindir)/crossloop.pl
 +	chmod 755 $(DESTDIR)$(bindir)/crossloop.pl
-+	rm -f $(DESTDIR)$(C_BINDIR)/crossloop
++	rm -f $(DESTDIR)$(bindir)/crossloop
 +	sed s%BINDIR%$(bindir)%g <crossloop >$(DESTDIR)$(bindir)/crossloop
 +	chmod 755 $(DESTDIR)$(bindir)/crossloop
 +	$(INSTALL) $(INSTALLFLAGS) mktable.script $(DESTDIR)$(bindir)/mktable
 +	$(INSTALL) $(INSTALLFLAGS) add_throw.perl $(DESTDIR)$(bindir)/add_throw
++	@if [ ! -f $(DESTDIR)$(bindir)/crossloop.web ]; then \
++		$(INSTALL) $(INSTALLFLAGS) crossloop.web $(DESTDIR)$(bindir)/crossloop.web; \
+ 	fi
  
  depend::
+--- crossfire-1.3.0/doc/Makefile.in.wiget	Tue Jul  2 01:18:21 2002
++++ crossfire-1.3.0/doc/Makefile.in	Mon Jul  8 21:19:04 2002
+@@ -106,8 +106,8 @@
+ 	$(RM) -rf $(DTOP)
  
+ install::
+-	@if [ ! -d $(MAN1) ]; then \
+-		$(MKDIR) -p $(MAN1); \
++	@if [ ! -d $(DESTDIR)$(MAN1) ]; then \
++		$(MKDIR) -p $(DESTDIR)$(MAN1); \
+ 	fi
+-	$(INSTALL) $(srcdir)/crossedit.man $(MAN1)/crossedit.$(MANSUFFIX)
+-	$(INSTALL) $(srcdir)/crossfire.man $(MAN1)/crossfire.$(MANSUFFIX)
++	$(INSTALL) $(srcdir)/crossedit.man $(DESTDIR)$(MAN1)/crossedit.$(MANSUFFIX)
++	$(INSTALL) $(srcdir)/crossfire.man $(DESTDIR)$(MAN1)/crossfire.$(MANSUFFIX)
+--- crossfire-1.3.0/crossedit/Makefile.in.wiget	Tue Jul  2 01:18:22 2002
++++ crossfire-1.3.0/crossedit/Makefile.in	Mon Jul  8 21:19:04 2002
+@@ -150,7 +150,7 @@
+ 
+ 
+ install:: crossedit
+-	@if [ ! -d ${bindir} ]; then \
+-		$(MKDIR) -p ${bindir}; \
++	@if [ ! -d $(DESTDIR)${bindir} ]; then \
++		$(MKDIR) -p $(DESTDIR)${bindir}; \
+ 	fi
+-	$(INSTALL) crossedit ${bindir}/crossedit
++	$(INSTALL) crossedit $(DESTDIR)${bindir}/crossedit
+--- crossfire-1.3.0/Makefile.in.wiget	Tue Jul  2 01:18:12 2002
++++ crossfire-1.3.0/Makefile.in	Mon Jul  8 21:19:04 2002
+@@ -124,7 +124,7 @@
+ 
+ install::
+ 	@if [ ! -d ${prefix} ]; then \
+-		$(MKDIR) -p ${prefix}; \
++		$(MKDIR) -p $(DESTDIR)${prefix}; \
+ 	fi
+ 	@for dir in $(SUBDIRS); \
+ 	do \
+--- crossfire-1.3.0/plugin/Makefile.in.destdir	Mon Jul  8 21:43:03 2002
++++ crossfire-1.3.0/plugin/Makefile.in	Mon Jul  8 21:44:19 2002
+@@ -65,12 +65,12 @@
+ # as such, if plugin target is set, then we install, otherwise 
+ # we don't do anything.
+ install:
+-	@if [ ! -d $(CROSSFIRE_PATH)/plugins ]; then \
+-	    echo "Creating directory $(CROSSFIRE_PATH)/plugins"; \
+-	    $(MKDIR) -p $(CROSSFIRE_PATH)/plugins; \
++	@if [ ! -d $(DESTDIR)$(CROSSFIRE_PATH)/plugins ]; then \
++	    echo "Creating directory $(DESTDIR)$(CROSSFIRE_PATH)/plugins"; \
++	    $(MKDIR) -p $(DESTDIR)$(CROSSFIRE_PATH)/plugins; \
+ 	fi
+ 	@if [ "X$(PLUGIN_TARGET)" != "X" ]; then \
+-		$(INSTALL) plugin_python.so.0.1 $(CROSSFIRE_PATH)/plugins; \
++		$(INSTALL) plugin_python.so.0.1 $(DESTDIR)$(CROSSFIRE_PATH)/plugins; \
+ 	fi
+ 
+ plugin_python.so.0.1: $(OBJS) ../common/libcross.a

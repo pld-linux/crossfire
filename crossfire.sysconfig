@@ -1,0 +1,4 @@
+# Customized setings for samba
+
+# Define nice level for samba & config 
+SERVICE_RUN_NICE_LEVEL="+5"

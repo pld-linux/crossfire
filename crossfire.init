@@ -1,0 +1,72 @@
+#!/bin/sh
+#
+# chkconfig:	345 98 03
+# description:	Starts and stops the Crossfire server 
+#
+
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Demon specified configuration.
+. /etc/sysconfig/crossfire
+
+# Check that networking is up.
+if is_no "${NETWORKING}"; then
+        msg_Network_Down crossfire
+        exit 1
+fi
+
+TMPDIR="/tmp"; export TMPDIR
+cd /
+
+case "$1" in
+    start)
+        if [ ! -f /var/lock/subsys/crossfire ]; then
+		msg_starting crossfire
+		daemon "su games -s /bin/sh -c '/usr/X11R6/bin/crossloop >/dev/null 2>&1 &'"
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/crossfire
+        else
+                msg_Already_Running crossfire
+                exit 1
+        fi
+	;;
+    stop)
+        if [ -f /var/lock/subsys/crossfire ]; then
+                msg_stopping crossloop
+		killproc crossloop
+                msg_stopping crossfire
+		killproc crossfire
+		rm -f /var/lock/subsys/crossfire >/dev/null 2>&1
+        else
+                msg_Not_Running crossfire
+                exit 1
+        fi
+	;;
+   status)
+    	status crossfire
+    	status crossloop
+	exit $?
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  reload)
+	if [ -f /var/lock/subsys/crossfire ]; then
+	        msg_reloading crossfire
+	        killproc crossfire
+	else
+	        msg_Not_Running crossfire
+	        exit 1
+        fi
+	;;
+  *)
+	msg_Usage "$0 {start|stop|restart|reload|status}"
+	exit 1
+esac

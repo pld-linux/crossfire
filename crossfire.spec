@@ -65,10 +65,23 @@ touch $RPM_BUILD_ROOT/var/log/crossfire
 rm -rf $RPM_BUILD_ROOT
 
 %post
-DESC="Crossfire server"; %chkconfig_add
+/sbin/chkconfig --add crossfire
+if [ -r /var/lock/subsys/crossfire ]; then
+	/etc/rc.d/init.d/crossfire restart >&2
+else
+	echo "Run \"/etc/rc.d/init.d/crossfire start\" to start Crossfire server."
+fi
 
 %preun
-%chkconfig_del
+if [ "$1" = "0" ]; then
+	if [ -r /var/lock/subsys/crossfire ]; then
+		/etc/rc.d/init.d/crossfire stop >&2
+	fi
+	/sbin/chkconfig --del crossfire
+fi
+
+
+
 
 %files
 %defattr(644,root,root,755)

@@ -40,18 +40,18 @@ dostêpni klienci pod Windows i w Javie.
 
 %package editor
 Summary:	Crossfire map editor
-Summary(pl):	Edytor map crossfire
+Summary(pl):	Edytor map Crossfire
 Group:		Applications/Games
 
 %description editor
 Crossfire map editor.
 
 %description editor -l pl
-Edytor map crossfire.
+Edytor map Crossfire.
 
 %package doc
 Summary:	Crossfire game documentation
-Summary(pl):	Dokumentacja gry crossfire
+Summary(pl):	Dokumentacja gry Crossfire
 Group:		Applications/Games
 
 %description doc
@@ -61,12 +61,16 @@ Crossfire documentation for players. Includes handbook and spoiler.
 Dokumentacja dla graczy Crossfire. Zawiera podrêczniek oraz spoiler.
 
 %package plugin-python
-Summary:	python plugin for crossfire server
+Summary:	Python plugin for Crossfire server
+Summary(pl):	Wtyczka Pythona dla serwera Crossfire
 Group:		Applications/Games
 Requires:	%{name} = %{version}
 
 %description plugin-python
-Python plugin for crossfire server.
+Python plugin for Crossfire server.
+
+%description plugin-python -l pl
+Wtyczka Pythona dla serwera Crossfire.
 
 %prep
 %setup -q

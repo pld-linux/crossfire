@@ -6,5 +6,5 @@ PORT=13327
 # more verbose message logging?
 DEBUG=no
 
-# Define nice level for crossfire & config 
+# Define nice level for crossfire & config
 SERVICE_RUN_NICE_LEVEL="+5"

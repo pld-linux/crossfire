@@ -12,7 +12,7 @@ Source3:	%{name}.logrotate
 Patch0:		%{name}-DESTDIR.patch
 Patch1:		%{name}-directories.patch
 Patch2:		%{name}-tmp_maps.patch
-URL:		http://crossfire.real-time.com
+URL:		http://crossfire.real-time.com/
 BuildRequires:	XFree86-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Prereq:		/sbin/chkconfig

@@ -2,7 +2,7 @@ Summary:	Multiplayer roguelike game server
 Summary(pl):	Serwer gry roguelike dla wielu graczy
 Name:		crossfire
 Version:	1.6.0
-Release:	1
+Release:	2
 Group:		Applications/Games
 License:	GPL
 Source0:	http://dl.sourceforge.net/crossfire/%{name}-%{version}.tar.gz

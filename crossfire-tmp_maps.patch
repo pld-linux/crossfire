@@ -1,0 +1,15 @@
+diff -durN crossfire-0.98.0.orig/include/config.h crossfire-0.98.0/include/config.h
+--- crossfire-0.98.0.orig/include/config.h	Tue Apr 17 16:51:01 2001
++++ crossfire-0.98.0/include/config.h	Tue Apr 17 17:05:00 2001
+@@ -361,9 +361,9 @@
+  * this to really work, the filename must be constant so the next run
+  * knows where to find the information.
+  */
+-/*
++
+ #define RECYCLE_TMP_MAPS
+-*/
++
+ 
+ /* define RESURECTION if you want to let players bring other players
+  * back to life via some spells.  If RESURRECTION is undefined, then a

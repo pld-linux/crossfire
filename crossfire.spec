@@ -6,6 +6,7 @@ Release:	1
 Group:		Applications/Games
 License:	GPL
 Source0:	http://dl.sourceforge.net/crossfire/%{name}-%{version}.tar.gz
+# Source0-md5:	b22556499a1aa99a19e6c5c7b33d501f
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate

@@ -4,7 +4,7 @@
 # description:	Starts and stops the Crossfire server 
 #
 
-export PATH=/bin:/sbin:/usr/bin:/usr/sbin
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin
 
 # Source function library.
 . /etc/rc.d/init.d/functions
@@ -22,13 +22,38 @@ if is_no "${NETWORKING}"; then
 fi
 
 TMPDIR="/tmp"; export TMPDIR
-cd /
 
 case "$1" in
     start)
         if [ ! -f /var/lock/subsys/crossfire ]; then
+		cd /
+		FLAGS="-log /var/log/crossfire"
+		if [ -n "$PORT" ] ; then
+			FLAGS="$FLAGS -csport $PORT"
+		fi
+		if is_yes "$DEBUG" ; then
+			FLAGS="$FLAGS -d"
+		else
+			FLAGS="$FLAGS +d"
+		fi
+		if is_yes "$STAT_LOSS_ON_DEATH" ; then
+			FLAGS="$FLAGS -stat_loss_on_death"
+		else
+			FLAGS="$FLAGS +stat_loss_on_death"
+		fi
+		if is_yes "$BALANCED_STAT_LOSS" ; then
+			FLAGS="$FLAGS -balanced_stat_loss"
+		else
+			FLAGS="$FLAGS +balanced_stat_loss"
+		fi
+		if is_yes "$USE_PERMANENT_EXPERIENCE" ; then
+			FLAGS="$FLAGS -use_permanent_experience"
+		else
+			FLAGS="$FLAGS +use_permanent_experience"
+		fi
+	
 		msg_starting crossfire
-		daemon "su games -s /bin/sh -c '/usr/X11R6/bin/crossloop >/dev/null 2>&1 &'"
+		daemon su games -c "\"exec crossfire -detach $FLAGS >>/var/log/crossfire 2>&1\"" 
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/crossfire
         else
@@ -38,8 +63,6 @@ case "$1" in
 	;;
     stop)
         if [ -f /var/lock/subsys/crossfire ]; then
-                msg_stopping crossloop
-		killproc crossloop
                 msg_stopping crossfire
 		killproc crossfire
 		rm -f /var/lock/subsys/crossfire >/dev/null 2>&1
@@ -50,7 +73,7 @@ case "$1" in
 	;;
    status)
     	status crossfire
-    	status crossloop
+	su games -c "crossfire +d -s"
 	exit $?
 	;;
   restart)

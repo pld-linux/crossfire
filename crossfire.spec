@@ -60,7 +60,7 @@ Group:		Applications/Games
 Crossfire documentation for players. Includes handbook and spoiler.
 
 %description doc -l pl
-Dokumentacja dla graczy Crossfire. Zawiera podrêczniek oraz spoiler.
+Dokumentacja dla graczy Crossfire. Zawiera podrêcznik oraz spoiler.
 
 %package plugin-python
 Summary:	Python plugin for Crossfire server

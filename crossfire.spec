@@ -16,7 +16,7 @@ BuildRequires:	XFree86-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
-BuildRequires:	python-devel >= 2.3
+BuildRequires:	python-devel >= 1:2.3
 Requires(post,preun):	/sbin/chkconfig
 Requires:	crossfire-maps
 %pyrequires_eq  python

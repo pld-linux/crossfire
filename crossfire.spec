@@ -5,8 +5,6 @@ Version:	1.0.0
 Release:	1
 License:	GPL
 Group:		Applications/Games
-Group(de):	Applikationen/Spiele
-Group(pl):	Aplikacje/Gry
 Source0:	ftp://ftp.scruz.net/users/mwedel/public/%{name}-%{version}.tar.bz2
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
@@ -42,8 +40,6 @@ dostêpni klienci pod Windows i w Javie.
 Summary:	Crossfire map editor
 Summary(pl):	Edytor map crossfire
 Group:		Applications/Games
-Group(de):	Applikationen/Spiele
-Group(pl):	Aplikacje/Gry
 
 %description editor
 Crossfire map editor.

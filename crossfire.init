@@ -17,15 +17,15 @@ export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin
 
 # Check that networking is up.
 if is_no "${NETWORKING}"; then
-        msg_Network_Down crossfire
-        exit 1
+	msg_network_down crossfire
+	exit 1
 fi
 
 TMPDIR="/tmp"; export TMPDIR
 
 case "$1" in
-    start)
-        if [ ! -f /var/lock/subsys/crossfire ]; then
+  start)
+	if [ ! -f /var/lock/subsys/crossfire ]; then
 		cd /
 		FLAGS="-log /var/log/crossfire"
 		if [ -n "$PORT" ] ; then
@@ -40,23 +40,23 @@ case "$1" in
 		daemon su games -c "\"exec crossfire -detach $FLAGS >>/var/log/crossfire 2>&1\"" 
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/crossfire
-        else
-                msg_Already_Running crossfire
-                exit 1
-        fi
+	else
+		msg_already_running crossfire
+		exit 1
+	fi
 	;;
-    stop)
-        if [ -f /var/lock/subsys/crossfire ]; then
-                msg_stopping crossfire
+  stop)
+	if [ -f /var/lock/subsys/crossfire ]; then
+		msg_stopping crossfire
 		killproc crossfire
 		rm -f /var/lock/subsys/crossfire >/dev/null 2>&1
-        else
-                msg_Not_Running crossfire
-                exit 1
-        fi
+	else
+		msg_Not_Running crossfire
+		exit 1
+	fi
 	;;
-   status)
-    	status crossfire
+  status)
+	status crossfire
 	su games -c "crossfire +d -s"
 	exit $?
 	;;
@@ -66,14 +66,16 @@ case "$1" in
 	;;
   reload)
 	if [ -f /var/lock/subsys/crossfire ]; then
-	        msg_reloading crossfire
-	        killproc crossfire
+		msg_reloading crossfire
+		killproc crossfire
 	else
-	        msg_Not_Running crossfire
-	        exit 1
-        fi
+		msg_not_running crossfire
+		exit 1
+	fi
 	;;
   *)
 	msg_Usage "$0 {start|stop|restart|reload|status}"
 	exit 1
 esac
+
+exit $RETVAL

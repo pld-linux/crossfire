@@ -1,6 +1,6 @@
 diff -durN crossfire-0.98.0.orig/include/config.h crossfire-0.98.0/include/config.h
 --- crossfire-0.98.0.orig/include/config.h	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/include/config.h	Tue Apr 17 09:45:40 2001
++++ crossfire-0.98.0/include/config.h	Tue Apr 17 17:10:55 2001
 @@ -680,7 +680,7 @@
  #ifdef WIN32 /* change define path */
  #define LOGFILE "tmp\\cross.log"
@@ -19,9 +19,67 @@ diff -durN crossfire-0.98.0.orig/include/config.h crossfire-0.98.0/include/confi
  #endif
  
  
+diff -durN crossfire-0.98.0.orig/server/ban.c crossfire-0.98.0/server/ban.c
+--- crossfire-0.98.0.orig/server/ban.c	Sun Apr  8 07:49:34 2001
++++ crossfire-0.98.0/server/ban.c	Tue Apr 17 17:12:17 2001
+@@ -33,7 +33,7 @@
+   int           num1;
+   int   Hits=0;                 /* Hits==2 means we're banned */
+ 
+-  sprintf (buf, "%s/%s", settings.datadir, BANFILE);
++  sprintf (buf, "%s/%s", "/etc/crossfire", BANFILE);
+   if ((bannedfile = fopen(buf, "r")) == NULL) {
+     LOG (llevDebug, "Could not find file Banned file.\n");
+     return(0);
+diff -durN crossfire-0.98.0.orig/server/c_wiz.c crossfire-0.98.0/server/c_wiz.c
+--- crossfire-0.98.0.orig/server/c_wiz.c	Sun Apr  8 07:49:34 2001
++++ crossfire-0.98.0/server/c_wiz.c	Tue Apr 17 17:12:50 2001
+@@ -712,7 +712,7 @@
+   *pl_name=op->name?op->name:"*";
+ #endif
+ 
+-  sprintf (buf, "%s/%s", settings.datadir, DMFILE);
++  sprintf (buf, "%s/%s", "/etc/crossfire", DMFILE);
+   if ((dmfile = fopen(buf, "r")) == NULL) {
+     LOG (llevDebug, "Could not find DM file.\n");
+     return(0);
+diff -durN crossfire-0.98.0.orig/server/init.c crossfire-0.98.0/server/init.c
+--- crossfire-0.98.0.orig/server/init.c	Sun Apr  8 07:49:34 2001
++++ crossfire-0.98.0/server/init.c	Tue Apr 17 17:15:20 2001
+@@ -222,7 +222,7 @@
+     int	has_val,comp;
+     FILE    *fp;
+ 
+-    sprintf(buf,"%s/settings",settings.datadir);
++    sprintf(buf,"%s/settings","/etc/crossfire");
+     /* We don't require a settings file at current time, but down the road,
+      * there will probably be so many values that not having a settings file
+      * will not be a good thing.
+@@ -445,7 +445,7 @@
+   int comp;
+ 
+ #ifdef SHUTDOWN_FILE
+-  sprintf(buf,"%s/%s",settings.datadir,SHUTDOWN_FILE);
++  sprintf(buf,"%s/%s","/etc/crossfire",SHUTDOWN_FILE);
+   if ((fp = open_and_uncompress(buf, 0, &comp)) != NULL) {
+     while (fgets(buf, MAX_BUF-1, fp) != NULL)
+       printf("%s", buf);
+@@ -499,10 +499,10 @@
+   printf("Datadir:\t\t%s\n",settings.datadir);
+   printf("Localdir:\t\t%s\n",settings.localdir);
+ #ifdef PERM_FILE
+-  printf("Perm file:\t<LIB>/%s\n",PERM_FILE);
++  printf("Perm file:\t/etc/crossfire/%s\n",PERM_FILE);
+ #endif
+ #ifdef SHUTDOWN_FILE
+-  printf("Shutdown file:\t<LIB>/%s\n",SHUTDOWN_FILE);
++  printf("Shutdown file:\t/etc/crossfire/%s\n",SHUTDOWN_FILE);
+ #endif
+   printf("Save player:\t<true>\n");
+   printf("Save mode:\t%4.4o\n",SAVE_MODE);
 diff -durN crossfire-0.98.0.orig/server/main.c crossfire-0.98.0/server/main.c
 --- crossfire-0.98.0.orig/server/main.c	Sun Apr  8 07:49:34 2001
-+++ crossfire-0.98.0/server/main.c	Tue Apr 17 09:44:01 2001
++++ crossfire-0.98.0/server/main.c	Tue Apr 17 17:14:36 2001
 @@ -29,6 +29,7 @@
  #include <version.h>
  #include <global.h>
@@ -30,3 +88,24 @@ diff -durN crossfire-0.98.0.orig/server/main.c crossfire-0.98.0/server/main.c
  
  #ifdef HAVE_DES_H
  #include <des.h>
+@@ -961,7 +962,7 @@
+     clock = time (NULL);
+     tm = (struct tm *) localtime (&clock);
+ 
+-    sprintf (buf, "%s/%s", settings.datadir, PERM_FILE);
++    sprintf (buf, "%s/%s", "/etc/crossfire", PERM_FILE);
+     if ((fp = open_and_uncompress(buf, 0, &comp)) == NULL)
+ 	return 0;
+ 
+diff -durN crossfire-0.98.0.orig/server/player.c crossfire-0.98.0/server/player.c
+--- crossfire-0.98.0.orig/server/player.c	Sun Apr  8 07:49:34 2001
++++ crossfire-0.98.0/server/player.c	Tue Apr 17 17:13:33 2001
+@@ -46,7 +46,7 @@
+   FILE *fp;
+   int comp;
+ 
+-  sprintf(buf,"%s/%s",settings.datadir,MOTD);
++  sprintf(buf,"%s/%s","/etc/crossfire",MOTD);
+   if((fp=open_and_uncompress(buf,0,&comp))==NULL) {
+     return;
+   }

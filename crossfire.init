@@ -33,7 +33,7 @@ case "$1" in
 	if [ ! -f /var/lock/subsys/crossfire ]; then
 		cd /
 		FLAGS="-log /var/log/crossfire"
-		if [ -n "$PORT" ] ; then
+		if [ -n "$PORT" ]; then
 			FLAGS="$FLAGS -csport $PORT"
 		fi
 		if is_yes "$DEBUG" ; then

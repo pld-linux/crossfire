@@ -10,6 +10,7 @@ Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Patch0:		%{name}-DESTDIR.patch
 Patch1:		%{name}-directories.patch
+Patch2:		%{name}-tmp_maps.patch
 URL:		http://crossfire.real-time.com
 BuildRequires:	XFree86-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -42,6 +43,7 @@ Crossfire map editor.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %configure
@@ -52,7 +54,8 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/var/log,/etc/{sysconfig,%{name},logrotate.d},/etc/rc.d/init.d}
 install -d $RPM_BUILD_ROOT%{_localstatedir}/%{name}/tmp
 %{__make} install DESTDIR="$RPM_BUILD_ROOT"
-mv $RPM_BUILD_ROOT%{_datadir}/%{name}/settings $RPM_BUILD_ROOT/etc/%{name}
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/{ban_file,settings,dm_file,motd,forbid} \
+	$RPM_BUILD_ROOT/etc/%{name}
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}

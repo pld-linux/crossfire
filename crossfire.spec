@@ -1,19 +1,20 @@
 Summary:	Multiplayer roguelike game server
 Summary(pl):	Serwer gry roguelike dla wielu graczy
 Name:		crossfire
-Version:	1.5.0
-Release:	2
+Version:	1.6.0
+Release:	1
 Group:		Applications/Games
 License:	GPL
 Source0:	http://dl.sourceforge.net/crossfire/%{name}-%{version}.tar.gz
-# Source0-md5:	b22556499a1aa99a19e6c5c7b33d501f
+# Source0-md5:	cac617806c2430821f8bd918726a66e1
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
-Patch0:		%{name}-perlpath.patch
+Patch0:		%{name}-python2.3.patch
 URL:		http://crossfire.real-time.com/
 BuildRequires:	XFree86-devel
 BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	python-devel >= 2.3
 Requires(post,preun):	/sbin/chkconfig
 Requires:	crossfire-maps
@@ -77,7 +78,10 @@ Wtyczka Pythona dla serwera Crossfire.
 %patch0 -p1
 
 %build
+%{__libtoolize}
+%{__aclocal}
 %{__autoconf}
+%{__automake}
 %configure
 %{__make}
 
@@ -91,6 +95,8 @@ install -d $RPM_BUILD_ROOT{/var/log,/etc/{sysconfig,%{name},logrotate.d},/etc/rc
 
 rm $RPM_BUILD_ROOT%{_libdir}/crossfire/plugins/plugin_python.a
 rm $RPM_BUILD_ROOT%{_bindir}/crossloop*
+rm $RPM_BUILD_ROOT%{_mandir}/*/crossloop*
+rm $RPM_BUILD_ROOT/usr/bin/player_dl.pl
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
@@ -117,16 +123,14 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc DEVELOPERS README TODO
-%doc doc/{alchemy.doc,experience,multigod,spell_params.doc}
-%doc doc/{spell-paths,spellcasters_guide_to_runes,metaserver}
-%doc doc/Developers utils/crossloop{,.web,.pl}
+%doc DEVELOPERS README TODO ChangeLog
+%doc doc/{alchemy.doc,experience,metaserver,multigod,plugins}
 %attr(750,root,games) %{_bindir}/crossfire
 %attr(755,root,games) %{_bindir}/crossfire-config
 %dir %attr(750,root,games) %{_datadir}/crossfire
 %{_datadir}/crossfire/*
 %{_mandir}/man?/crossfire*
-%dir %attr(750,root,games) %{_localstatedir}/crossfire
+%dir %attr(770,root,games) %{_localstatedir}/crossfire
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/players
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/unique-items
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/tmp
@@ -135,6 +139,7 @@ fi
 %attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/highscore
 %attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/temp.maps
 %attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/clockdata
+%attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/banish_file
 %dir /etc/crossfire
 %config(noreplace) %verify(not size mtime md5) /etc/crossfire/*
 %attr(754,root,root) /etc/rc.d/init.d/crossfire
@@ -158,7 +163,8 @@ fi
 %defattr(644,root,root,755)
 %doc doc/{handbook.ps,spoiler.ps}
 %doc doc/{PlayerStats,RunTimeCommands,SurvivalGuide}
-%doc doc/{skills.doc,spellcasters_guide_to_runes,spells*}
+%doc doc/{skills.doc,spellcasters_guide_to_runes}
+%doc doc/spell-docs/{*.txt,spell-list.ps,spell-summary.ps}
 
 %files plugin-python
 %defattr(644,root,root,755)

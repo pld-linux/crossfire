@@ -1,0 +1,11 @@
+--- crossfire-1.3.0/configure.in.python	Mon Jul  8 22:13:02 2002
++++ crossfire-1.3.0/configure.in	Mon Jul  8 22:13:19 2002
+@@ -163,7 +163,7 @@
+ dnl since it also relies on the previous detection of
+ dnl Python.h
+ echo -n "checking for python lib... "
+-PYTHON_LIB=`echo /usr/lib/python*/config/libpython*.a`
++PYTHON_LIB=`echo /usr/lib/libpython*.so`
+ if test ! -f $PYTHON_LIB ; then
+     echo "no"
+     PYTHON_LIB=""

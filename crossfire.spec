@@ -144,7 +144,7 @@ fi
 %dir /etc/crossfire
 %config(noreplace) %verify(not size mtime md5) /etc/crossfire/*
 %attr(754,root,root) /etc/rc.d/init.d/crossfire
-%attr(660,root,root) /etc/logrotate.d/crossfire
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/crossfire
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/crossfire
 %attr(660,root,games) %config(noreplace) %verify(not size mtime md5) /var/log/crossfire
 %dir %{_libdir}/crossfire

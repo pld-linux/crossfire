@@ -1,0 +1,12 @@
+diff -durN crossfire-0.95.8.orig/utils/crossloop crossfire-0.95.8/utils/crossloop
+--- crossfire-0.95.8.orig/utils/crossloop	Wed Nov 29 07:30:16 2000
++++ crossfire-0.95.8/utils/crossloop	Mon Jan 29 09:00:40 2001
+@@ -5,7 +5,7 @@
+ 
+ CMDNAME="BINDIR/crossfire"
+ maxrestart=500
+-logdir="/tmp/crosservlog"
++logdir="/var/log/crossfire"
+ 
+ 
+ logcount=0

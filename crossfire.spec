@@ -5,16 +5,16 @@ Version:	1.5.0
 Release:	1
 Group:		Applications/Games
 License:	GPL
-Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/crossfire/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/crossfire/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Patch0:		%{name}-perlpath.patch
 URL:		http://crossfire.real-time.com/
-Requires:	crossfire-maps
 BuildRequires:	XFree86-devel
 BuildRequires:	autoconf
 Requires(post,preun):	/sbin/chkconfig
+Requires:	crossfire-maps
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_localstatedir	/var/lib
@@ -70,7 +70,7 @@ Python plugin for crossfire server.
 %patch0 -p1
 
 %build
-autoconf
+%{__autoconf}
 %configure
 %{__make}
 

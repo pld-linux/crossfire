@@ -6,14 +6,5 @@ PORT=13327
 # more verbose message logging?
 DEBUG=no
 
-# toggle between stat loss or stat depletion
-STAT_LOSS_ON_DEATH=no
-
-# Based death stat depletion on level etc?
-BALANCED_STAT_LOSS=false
-
-# allow players to accumulate permanent experience? 
-USE_PERMANENT_EXPERIENCE=no
-
 # Define nice level for crossfire & config 
 SERVICE_RUN_NICE_LEVEL="+5"

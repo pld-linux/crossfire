@@ -15,6 +15,7 @@ URL:		http://crossfire.real-time.com/
 BuildRequires:	XFree86-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	libtool
 BuildRequires:	python-devel >= 2.3
 Requires(post,preun):	/sbin/chkconfig
 Requires:	crossfire-maps
@@ -65,7 +66,7 @@ Dokumentacja dla graczy Crossfire. Zawiera podrêczniek oraz spoiler.
 Summary:	Python plugin for Crossfire server
 Summary(pl):	Wtyczka Pythona dla serwera Crossfire
 Group:		Applications/Games
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description plugin-python
 Python plugin for Crossfire server.

@@ -71,10 +71,8 @@ case "$1" in
   reload)
 	if [ -f /var/lock/subsys/crossfire ]; then
 		msg_reloading crossfire
-		busy
 		killproc crossfire
 		RETVAL=$?
-		[ $RETVAL -eq 0 ] && ok || died
 	else
 		msg_not_running crossfire
 		exit 1

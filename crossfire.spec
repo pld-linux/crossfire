@@ -19,7 +19,6 @@ BuildRequires:	autoconf
 Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_prefix		/usr/X11R6
 %define		_localstatedir	/var/lib
 
 %description 

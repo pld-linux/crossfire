@@ -15,7 +15,8 @@ Patch2:		%{name}-tmp_maps.patch
 Patch3:		%{name}-python.patch
 URL:		http://crossfire.real-time.com/
 BuildRequires:	XFree86-devel
-Prereq:		/sbin/chkconfig
+BuildRequires:	autoconf
+Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
@@ -69,7 +70,7 @@ Dokumentacja dla graczy Crossfire. Zawiera podrêczniek oraz spoiler.
 cd lib
 
 %build
-autoconf
+%{__autoconf}
 %configure
 %{__make}
 

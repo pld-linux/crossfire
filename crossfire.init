@@ -80,7 +80,7 @@ case "$1" in
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
-	exit 7
+	exit 3
 esac
 
 exit $RETVAL

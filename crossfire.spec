@@ -1,19 +1,17 @@
 Summary:	Multiplayer roguelike game server
 Summary(pl):	Serwer gry roguelike dla wielu graczy
 Name:		crossfire
-Version:	1.3.0
+Version:	1.5.0
 Release:	1
-License:	GPL
 Group:		Applications/Games
-Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/crossfire/%{name}-%{version}.tar.bz2
+License:	GPL
+Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/crossfire/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
-Patch0:		%{name}-DESTDIR.patch
-Patch1:		%{name}-directories.patch
-Patch2:		%{name}-tmp_maps.patch
-Patch3:		%{name}-python.patch
+Patch0:		%{name}-perlpath.patch
 URL:		http://crossfire.real-time.com/
+Requires:	crossfire-maps
 BuildRequires:	XFree86-devel
 BuildRequires:	autoconf
 Requires(post,preun):	/sbin/chkconfig
@@ -59,17 +57,20 @@ Crossfire documentation for players. Includes handbook and spoiler.
 %description doc -l pl
 Dokumentacja dla graczy Crossfire. Zawiera podrêczniek oraz spoiler.
 
+%package plugin-python
+Summary:	python plugin for crossfire server
+Group:		Applications/Games
+Requires:	%{name} = %{version}
+
+%description plugin-python
+Python plugin for crossfire server.
+
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-# don't apply, its unfinished
-#%patch3 -p1
-cd lib
 
 %build
-%{__autoconf}
+autoconf
 %configure
 %{__make}
 
@@ -79,18 +80,12 @@ install -d $RPM_BUILD_ROOT{/var/log,/etc/{sysconfig,%{name},logrotate.d},/etc/rc
 	$RPM_BUILD_ROOT%{_localstatedir}/%{name}/{tmp,maps}
 
 %{__make} install DESTDIR="$RPM_BUILD_ROOT"
-
-mv -f $RPM_BUILD_ROOT%{_datadir}/%{name}/{ban_file,settings,dm_file,motd,forbid} \
-	$RPM_BUILD_ROOT/etc/%{name}
-
+rm $RPM_BUILD_ROOT%{_libdir}/crossfire/plugins/plugin_python.a
+rm $RPM_BUILD_ROOT%{_bindir}/crossloop*
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
-
-touch $RPM_BUILD_ROOT%{_localstatedir}/%{name}/clockdata \
-	$RPM_BUILD_ROOT/var/log/crossfire
-
-rm doc/Developers/Makefile*
+touch $RPM_BUILD_ROOT/var/log/crossfire
  
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -113,12 +108,13 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGES CREDITS DEVELOPERS README TODO
+%doc DEVELOPERS README TODO
 %doc doc/{alchemy.doc,experience,multigod,spell_params.doc} 
 %doc doc/{spell-paths,spellcasters_guide_to_runes,metaserver} 
 %doc doc/Developers
+%doc utils/crossloop{,.web,.pl}
 %attr(750,root,games) %{_bindir}/crossfire
-%attr(750,root,games) %{_bindir}/random_map
+%attr(755,root,games) %{_bindir}/crossfire-config
 %dir %attr(750,root,games) %{_datadir}/crossfire
 %{_datadir}/crossfire/*
 %{_mandir}/man?/crossfire*
@@ -137,10 +133,16 @@ fi
 %attr(660,root,root) /etc/logrotate.d/crossfire
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/crossfire
 %attr(660,root,games) %config(noreplace) %verify(not size mtime md5) /var/log/crossfire
-
+%dir %{_libdir}/crossfire
+%dir %{_libdir}/crossfire/plugins
+%attr(755,root,root) %{_libdir}/crossfire/add_throw.perl
+%attr(755,root,root) %{_libdir}/crossfire/metaserver.pl
+%attr(755,root,root) %{_libdir}/crossfire/mktable.script
+%attr(755,root,root) %{_libdir}/crossfire/random_map
+		     
 %files editor
 %defattr(644,root,root,755)
-%doc doc/Crossedit.doc crossedit/doc/*.doc
+%doc crossedit/doc/*.doc
 %attr(755,root,root) %{_bindir}/crossedit
 %{_mandir}/man?/crossedit*
 
@@ -149,3 +151,7 @@ fi
 %doc doc/{handbook.ps,spoiler.ps}
 %doc doc/{PlayerStats,RunTimeCommands,SurvivalGuide} 
 %doc doc/{skills.doc,spellcasters_guide_to_runes,spells*} 
+
+%files plugin-python
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/crossfire/plugins/plugin_python.*

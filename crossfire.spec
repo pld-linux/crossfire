@@ -20,7 +20,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description 
 This is a multiplayer graphical arcade and adventure game made for the
-X-Windows environment. There are also Windows and Java clients
+X-Window environment. There are also Windows and Java clients
 available.
 
 It has certain flavours from other games, especially Gauntlet (TM) and

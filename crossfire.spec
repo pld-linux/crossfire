@@ -22,7 +22,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_localstatedir	/var/lib
 
-%description 
+%description
 This is a multiplayer graphical arcade and adventure game made for the
 X-Window environment. There are also Windows and Java clients
 available.
@@ -91,7 +91,7 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
 touch $RPM_BUILD_ROOT/var/log/crossfire
- 
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -114,8 +114,8 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc DEVELOPERS README TODO
-%doc doc/{alchemy.doc,experience,multigod,spell_params.doc} 
-%doc doc/{spell-paths,spellcasters_guide_to_runes,metaserver} 
+%doc doc/{alchemy.doc,experience,multigod,spell_params.doc}
+%doc doc/{spell-paths,spellcasters_guide_to_runes,metaserver}
 %doc doc/Developers utils/crossloop{,.web,.pl}
 %attr(750,root,games) %{_bindir}/crossfire
 %attr(755,root,games) %{_bindir}/crossfire-config
@@ -143,7 +143,7 @@ fi
 %attr(755,root,root) %{_libdir}/crossfire/metaserver.pl
 %attr(755,root,root) %{_libdir}/crossfire/mktable.script
 %attr(755,root,root) %{_libdir}/crossfire/random_map
-		     
+
 %files editor
 %defattr(644,root,root,755)
 %doc crossedit/doc/*.doc
@@ -153,8 +153,8 @@ fi
 %files doc
 %defattr(644,root,root,755)
 %doc doc/{handbook.ps,spoiler.ps}
-%doc doc/{PlayerStats,RunTimeCommands,SurvivalGuide} 
-%doc doc/{skills.doc,spellcasters_guide_to_runes,spells*} 
+%doc doc/{PlayerStats,RunTimeCommands,SurvivalGuide}
+%doc doc/{skills.doc,spellcasters_guide_to_runes,spells*}
 
 %files plugin-python
 %defattr(644,root,root,755)

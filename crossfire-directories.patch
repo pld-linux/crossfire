@@ -1,0 +1,50 @@
+diff -durN crossfire-0.95.8.orig/include/config.h crossfire-0.95.8/include/config.h
+--- crossfire-0.95.8.orig/include/config.h	Wed Nov 29 07:30:14 2000
++++ crossfire-0.95.8/include/config.h	Fri Feb  2 13:29:37 2001
+@@ -670,7 +670,7 @@
+  */
+ 
+ #ifndef LOGFILE
+-#define LOGFILE "/tmp/cross.log"
++#define LOGFILE "/var/log/crossfire"
+ #endif
+ 
+ /*
+@@ -850,7 +850,7 @@
+  */
+ 
+ /*#define TMPDIR "/home/hugin/a/crossfire/crossfire/tmp"*/
+-#define TMPDIR "/tmp"
++#define TMPDIR "/var/lib/crossfire/tmp"
+ 
+ 
+ /* Directory to use for unique items. This is placed into the 'lib' 
+diff -durN crossfire-0.95.8.orig/server/main.c crossfire-0.95.8/server/main.c
+--- crossfire-0.95.8.orig/server/main.c	Wed Nov 29 07:30:14 2000
++++ crossfire-0.95.8/server/main.c	Fri Feb  2 13:31:14 2001
+@@ -29,6 +29,7 @@
+ #include <version.h>
+ #include <global.h>
+ #include <object.h>
++#include <config.h>
+ 
+ #ifdef HAVE_DES_H
+ #include <des.h>
+@@ -234,7 +235,7 @@
+       {
+ 	mapstruct *new_map;
+ 	FILE *newmap_params;  /* give the new map its parameters */
+-	newmap_params=fopen("/tmp/rmap_params","w");
++	newmap_params=fopen(TMPDIR"/rmap_params","w");
+ 	if(newmap_params!=NULL) {
+ 	  char newmap_name[HUGE_BUF];
+ 	  char oldmap_name[HUGE_BUF];
+@@ -265,7 +266,7 @@
+ 	  sprintf(newmap_name,"/random/%016d",reference_number++);
+ 
+ 	  /* now to generate the actual map. */
+-	  new_map=(mapstruct *)generate_random_map("/tmp/rmap_params",newmap_name);
++	  new_map=(mapstruct *)generate_random_map(TMPDIR"/rmap_params",newmap_name);
+ 
+ 	  /* set the hp,sp,path of the exit for the new */
+ 	  if(new_map) {

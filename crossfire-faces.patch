@@ -1,0 +1,21 @@
+diff -durN crossfire-1.1.0.orig/lib/Makefile.in crossfire-1.1.0/lib/Makefile.in
+--- crossfire-1.1.0.orig/lib/Makefile.in	Fri Mar 22 16:24:36 2002
++++ crossfire-1.1.0/lib/Makefile.in	Fri Mar 22 16:35:48 2002
+@@ -36,7 +36,7 @@
+ 	$(srcdir)/treasures $(srcdir)/animations $(srcdir)/archetypes \
+ 	$(srcdir)/bmaps $(srcdir)/bmaps.paths $(srcdir)/crossfire.0 \
+ 	$(srcdir)/crossfire.1 \
+-	$(srcdir)/attackmess $(srcdir)/image_info
++	$(srcdir)/attackmess $(srcdir)/image_info $(srcdir)/faces
+ 
+ BININSTALL = $(srcdir)/collect.pl $(srcdir)/util.pl
+ 
+@@ -125,7 +125,7 @@
+ bmaps.paths bmaps: .collect-stamp
+ 	make collect
+ 
+-install:: archetypes bmaps.paths crossfire.0 animations collect.pl util.pl
++install:: archetypes bmaps.paths crossfire.0 animations collect.pl util.pl faces
+ 	@if [ ! -d $(DESTDIR)$(datadir) ]; then \
+ 		$(MKDIR) -p $(DESTDIR)$(datadir); \
+ 	fi

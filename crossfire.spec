@@ -1,6 +1,6 @@
 Summary:	Multiplayer roguelike game server.
 Name:		crossfire
-Version:	0.98.0
+Version:	1.0.0
 Release:	1
 License:	GPL
 Group:		Applications/Games

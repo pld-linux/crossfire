@@ -67,7 +67,6 @@ Dokumentacja dla graczy Crossfire. Zawiera podrêczniek oraz spoiler.
 # don't apply, its unfinished
 #%patch3 -p1
 cd lib
-bunzip2 -c %{SOURCE1} | tar xf -
 
 %build
 autoconf
@@ -77,13 +76,14 @@ autoconf
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/var/log,/etc/{sysconfig,%{name},logrotate.d},/etc/rc.d/init.d}
-install -d $RPM_BUILD_ROOT%{_localstatedir}/%{name}/tmp
+install -d $RPM_BUILD_ROOT%{_localstatedir}/%{name}/{tmp,maps}
 %{__make} install DESTDIR="$RPM_BUILD_ROOT"
 mv -f $RPM_BUILD_ROOT%{_datadir}/%{name}/{ban_file,settings,dm_file,motd,forbid} \
 	$RPM_BUILD_ROOT/etc/%{name}
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
+touch $RPM_BUILD_ROOT%{_localstatedir}/%{name}/clockdata
 touch $RPM_BUILD_ROOT/var/log/crossfire
 rm doc/Developers/Makefile*
  
@@ -121,9 +121,11 @@ fi
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/players
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/unique-items
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/tmp
+%dir %attr(770,root,games) %{_localstatedir}/crossfire/maps
 %attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/bookarch
 %attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/highscore
 %attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/temp.maps
+%attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/clockdata
 %dir /etc/crossfire
 %config(noreplace) %verify(not size mtime md5) /etc/crossfire/*
 %attr(754,root,root) /etc/rc.d/init.d/crossfire
@@ -133,11 +135,12 @@ fi
 
 %files editor
 %defattr(644,root,root,755)
-%doc doc/{Crossedit.doc} crossedit/doc/*.doc
+%doc doc/Crossedit.doc crossedit/doc/*.doc
 %attr(755,root,root) %{_bindir}/crossedit
 %{_mandir}/man?/crossedit*
 
 %files doc
+%defattr(644,root,root,755)
 %doc doc/{handbook.ps,spoiler.ps}
 %doc doc/{PlayerStats,RunTimeCommands,SurvivalGuide} 
 %doc doc/{skills.doc,spellcasters_guide_to_runes,spells*} 

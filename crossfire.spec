@@ -80,7 +80,9 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/var/log,/etc/{sysconfig,%{name},logrotate.d},/etc/rc.d/init.d} \
 	$RPM_BUILD_ROOT%{_localstatedir}/%{name}/{tmp,maps}
 
-%{__make} install DESTDIR="$RPM_BUILD_ROOT"
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
+
 rm $RPM_BUILD_ROOT%{_libdir}/crossfire/plugins/plugin_python.a
 rm $RPM_BUILD_ROOT%{_bindir}/crossloop*
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
@@ -112,8 +114,7 @@ fi
 %doc DEVELOPERS README TODO
 %doc doc/{alchemy.doc,experience,multigod,spell_params.doc} 
 %doc doc/{spell-paths,spellcasters_guide_to_runes,metaserver} 
-%doc doc/Developers
-%doc utils/crossloop{,.web,.pl}
+%doc doc/Developers utils/crossloop{,.web,.pl}
 %attr(750,root,games) %{_bindir}/crossfire
 %attr(755,root,games) %{_bindir}/crossfire-config
 %dir %attr(750,root,games) %{_datadir}/crossfire

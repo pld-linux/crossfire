@@ -1,0 +1,9 @@
+diff -durN crossfire-1.5.0.orig/utils/mktable.script crossfire-1.5.0/utils/mktable.script
+--- crossfire-1.5.0.orig/utils/mktable.script	Fri Apr  2 21:10:08 1999
++++ crossfire-1.5.0/utils/mktable.script	Mon Mar  3 17:44:06 2003
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ # mktable - generate:
+ #   1. struct     <def-file>_type
+ #   2. table      <def-file>_table

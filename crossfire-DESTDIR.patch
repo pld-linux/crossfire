@@ -1,0 +1,165 @@
+diff -durN crossfire-0.95.8.orig/Makefile.in crossfire-0.95.8/Makefile.in
+--- crossfire-0.95.8.orig/Makefile.in	Wed Nov 29 07:30:13 2000
++++ crossfire-0.95.8/Makefile.in	Mon Jan 29 10:10:36 2001
+@@ -124,7 +124,7 @@
+ 
+ install::
+ 	@if [ ! -d ${prefix} ]; then \
+-		$(MKDIR) -p ${prefix}; \
++		$(MKDIR) -p $(DESTDIR)${prefix}; \
+ 	fi
+ 	@for dir in $(SUBDIRS); \
+ 	do \
+diff -durN crossfire-0.95.8.orig/crossedit/Makefile.in crossfire-0.95.8/crossedit/Makefile.in
+--- crossfire-0.95.8.orig/crossedit/Makefile.in	Wed Nov 29 07:30:16 2000
++++ crossfire-0.95.8/crossedit/Makefile.in	Mon Jan 29 10:10:36 2001
+@@ -151,7 +151,7 @@
+ 
+ 
+ install:: crossedit
+-	@if [ ! -d ${bindir} ]; then \
+-		$(MKDIR) -p ${bindir}; \
++	@if [ ! -d $(DESTDIR)${bindir} ]; then \
++		$(MKDIR) -p $(DESTDIR)${bindir}; \
+ 	fi
+-	$(INSTALL) crossedit ${bindir}/crossedit
++	$(INSTALL) crossedit $(DESTDIR)${bindir}/crossedit
+diff -durN crossfire-0.95.8.orig/doc/Makefile.in crossfire-0.95.8/doc/Makefile.in
+--- crossfire-0.95.8.orig/doc/Makefile.in	Wed Nov 29 07:30:16 2000
++++ crossfire-0.95.8/doc/Makefile.in	Mon Jan 29 10:10:36 2001
+@@ -76,8 +76,8 @@
+ 	$(RM) -rf $(DTOP)
+ 
+ install::
+-	@if [ ! -d $(MAN1) ]; then \
+-		$(MKDIR) -p $(MAN1); \
++	@if [ ! -d $(DESTDIR)$(MAN1) ]; then \
++		$(MKDIR) -p $(DESTDIR)$(MAN1); \
+ 	fi
+-	$(INSTALL) $(srcdir)/crossedit.man $(MAN1)/crossedit.$(MANSUFFIX)
+-	$(INSTALL) $(srcdir)/crossfire.man $(MAN1)/crossfire.$(MANSUFFIX)
++	$(INSTALL) $(srcdir)/crossedit.man $(DESTDIR)$(MAN1)/crossedit.$(MANSUFFIX)
++	$(INSTALL) $(srcdir)/crossfire.man $(DESTDIR)$(MAN1)/crossfire.$(MANSUFFIX)
+diff -durN crossfire-0.95.8.orig/lib/Makefile.in crossfire-0.95.8/lib/Makefile.in
+--- crossfire-0.95.8.orig/lib/Makefile.in	Wed Nov 29 07:30:14 2000
++++ crossfire-0.95.8/lib/Makefile.in	Mon Jan 29 10:10:36 2001
+@@ -106,38 +106,38 @@
+ 	make collect
+ 
+ install:: archetypes bmaps.paths crossfire.xbm crossfire.xpm crossfire.png  animations
+-	@if [ ! -d $(datadir) ]; then \
+-		$(MKDIR) -p $(datadir); \
++	@if [ ! -d $(DESTDIR)$(datadir) ]; then \
++		$(MKDIR) -p $(DESTDIR)$(datadir); \
+ 	fi
+-	@if [ ! -d $(localdir) ]; then \
+-		$(MKDIR) -p $(localdir); \
++	@if [ ! -d $(DESTDIR)$(localdir) ]; then \
++		$(MKDIR) -p $(DESTDIR)$(localdir); \
+ 	fi
+ 
+-	if [ ! -d $(datadir)/help ]; then \
++	if [ ! -d $(DESTDIR)$(datadir)/help ]; then \
+ 		echo "Creating directory $(datadir)/help"; \
+-		$(MKDIR) -p $(datadir)/help; \
++		$(MKDIR) -p $(DESTDIR)$(datadir)/help; \
+ 	fi;
+ 	@for i in $(FILES_HELP); do \
+ 	    echo "Installing $$i"; \
+-	    $(INSTALL) $(INSTALLFLAGS) $$i $(datadir)/help; \
++	    $(INSTALL) $(INSTALLFLAGS) $$i $(DESTDIR)$(datadir)/help; \
+ 	done
+ 	@for i in $(INSTALLFILES); do \
+ 	    echo "Installing $$i"; \
+-	    $(INSTALL) $(INSTALLFLAGS)  $$i $(datadir); \
++	    $(INSTALL) $(INSTALLFLAGS)  $$i $(DESTDIR)$(datadir); \
+ 	done
+ 
+ 	@if [ ! -f $(datadir)/settings ]; then \
+-		$(INSTALL) $(INSTALLFLAGS) settings $(datadir); \
++		$(INSTALL) $(INSTALLFLAGS) settings $(DESTDIR)$(datadir); \
+ 	fi
+ 
+-	touch $(localdir)/highscore
+-	touch $(localdir)/bookarch
+-	touch $(localdir)/temp.maps
++	touch $(DESTDIR)$(localdir)/highscore
++	touch $(DESTDIR)$(localdir)/bookarch
++	touch $(DESTDIR)$(localdir)/temp.maps
+ 
+ 	@for i in players unique-items; do \
+ 	    if [ ! -d $(localdir)/$$i ]; then \
+ 		echo "Creating directory $(localdir)/$$i"; \
+-		$(MKDIR) -p $(localdir)/$$i; \
++		$(MKDIR) -p $(DESTDIR)$(localdir)/$$i; \
+ 	    fi; \
+ 	done
+ 
+diff -durN crossfire-0.95.8.orig/random_maps/Makefile.in crossfire-0.95.8/random_maps/Makefile.in
+--- crossfire-0.95.8.orig/random_maps/Makefile.in	Wed Nov 29 07:30:14 2000
++++ crossfire-0.95.8/random_maps/Makefile.in	Mon Jan 29 10:11:10 2001
+@@ -118,10 +118,10 @@
+ 	@echo $(SRCS) > .patchlist
+ 
+ install:: random_map
+-	@if [ ! -d ${bindir} ]; then \
+-		$(MKDIR) -p ${bindir}; \
++	@if [ ! -d $(DESTDIR)${bindir} ]; then \
++		$(MKDIR) -p $(DESTDIR)${bindir}; \
+ 	fi
+-	$(INSTALL) random_map ${bindir}/random_map
++	$(INSTALL) random_map $(DESTDIR)${bindir}/random_map
+ 
+ 
+ 
+diff -durN crossfire-0.95.8.orig/server/Makefile.in crossfire-0.95.8/server/Makefile.in
+--- crossfire-0.95.8.orig/server/Makefile.in	Wed Nov 29 07:30:14 2000
++++ crossfire-0.95.8/server/Makefile.in	Mon Jan 29 10:10:36 2001
+@@ -138,7 +138,7 @@
+ 	@echo $(SRCS) > .patchlist
+ 
+ install:: crossfire
+-	@if [ ! -d ${bindir} ]; then \
+-		$(MKDIR) -p ${bindir}; \
++	@if [ ! -d $(DESTDIR)${bindir} ]; then \
++		$(MKDIR) -p $(DESTDIR)${bindir}; \
+ 	fi
+-	$(INSTALL) crossfire ${bindir}/crossfire
++	$(INSTALL) crossfire $(DESTDIR)${bindir}/crossfire
+diff -durN crossfire-0.95.8.orig/utils/Makefile.in crossfire-0.95.8/utils/Makefile.in
+--- crossfire-0.95.8.orig/utils/Makefile.in	Wed Nov 29 07:30:16 2000
++++ crossfire-0.95.8/utils/Makefile.in	Mon Jan 29 10:10:36 2001
+@@ -19,20 +19,20 @@
+ 	$(DEPEND) $(DEPENDFLAGS) -- $(ALLDEFINES) $(DEPEND_DEFINES) -- $(SRCS)
+ 
+ install:
+-	@if [ ! -d $(bindir) ]; then \
+-		$(MKDIR) -p $(bindir); \
++	@if [ ! -d $(DESTDIR)$(bindir) ]; then \
++		$(MKDIR) -p $(DESTDIR)$(bindir); \
+ 	fi
+-	rm -f $(bindir)/flushlocks
+-	sed s%xxxx%$(libdir)%g <flushlocks > $(bindir)/flushlocks
+-	chmod 755 $(bindir)/flushlocks
+-	rm -f $(bindir)/crossloop.pl
+-	sed s%BINDIR%$(bindir)%g <crossloop.pl >$(bindir)/crossloop.pl
+-	chmod 755 $(bindir)/crossloop.pl
+-	rm -f $(C_BINDIR)/crossloop
+-	sed s%BINDIR%$(bindir)%g <crossloop >$(bindir)/crossloop
+-	chmod 755 $(bindir)/crossloop
+-	$(INSTALL) $(INSTALLFLAGS) mktable.script $(bindir)/mktable
+-	$(INSTALL) $(INSTALLFLAGS) add_throw.perl $(bindir)/add_throw
++	rm -f $(DESTDIR)$(bindir)/flushlocks
++	sed s%xxxx%$(libdir)%g <flushlocks > $(DESTDIR)$(bindir)/flushlocks
++	chmod 755 $(DESTDIR)$(bindir)/flushlocks
++	rm -f $(DESTDIR)$(bindir)/crossloop.pl
++	sed s%BINDIR%$(bindir)%g <crossloop.pl >$(DESTDIR)$(bindir)/crossloop.pl
++	chmod 755 $(DESTDIR)$(bindir)/crossloop.pl
++	rm -f $(DESTDIR)$(C_BINDIR)/crossloop
++	sed s%BINDIR%$(bindir)%g <crossloop >$(DESTDIR)$(bindir)/crossloop
++	chmod 755 $(DESTDIR)$(bindir)/crossloop
++	$(INSTALL) $(INSTALLFLAGS) mktable.script $(DESTDIR)$(bindir)/mktable
++	$(INSTALL) $(INSTALLFLAGS) add_throw.perl $(DESTDIR)$(bindir)/add_throw
+ 
+ depend::
+ 

@@ -1,4 +1,4 @@
-# Customized setings for samba
+# Customized setings for crossfire
 
-# Define nice level for samba & config 
+# Define nice level for crossfire & config 
 SERVICE_RUN_NICE_LEVEL="+5"

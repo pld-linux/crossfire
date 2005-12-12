@@ -97,7 +97,7 @@ install -d $RPM_BUILD_ROOT{/var/log,/etc/{sysconfig,%{name},logrotate.d},/etc/rc
 rm $RPM_BUILD_ROOT%{_libdir}/crossfire/plugins/plugin_python.a
 rm $RPM_BUILD_ROOT%{_bindir}/crossloop*
 rm $RPM_BUILD_ROOT%{_mandir}/*/crossloop*
-rm $RPM_BUILD_ROOT/usr/bin/player_dl.pl
+rm $RPM_BUILD_ROOT%{_bindir}/player_dl.pl
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
@@ -136,17 +136,17 @@ fi
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/unique-items
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/tmp
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/maps
-%attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/bookarch
-%attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/highscore
-%attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/temp.maps
-%attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/clockdata
-%attr(660,root,games) %config(noreplace) %verify(not size mtime md5) %{_localstatedir}/crossfire/banish_file
-%dir /etc/crossfire
-%config(noreplace) %verify(not size mtime md5) /etc/crossfire/*
+%attr(660,root,games) %config(noreplace) %verify(not md5 mtime size) %{_localstatedir}/crossfire/bookarch
+%attr(660,root,games) %config(noreplace) %verify(not md5 mtime size) %{_localstatedir}/crossfire/highscore
+%attr(660,root,games) %config(noreplace) %verify(not md5 mtime size) %{_localstatedir}/crossfire/temp.maps
+%attr(660,root,games) %config(noreplace) %verify(not md5 mtime size) %{_localstatedir}/crossfire/clockdata
+%attr(660,root,games) %config(noreplace) %verify(not md5 mtime size) %{_localstatedir}/crossfire/banish_file
+%dir %{_sysconfdir}/crossfire
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/crossfire/*
 %attr(754,root,root) /etc/rc.d/init.d/crossfire
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/crossfire
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/crossfire
-%attr(660,root,games) %config(noreplace) %verify(not size mtime md5) /var/log/crossfire
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/crossfire
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/crossfire
+%attr(660,root,games) %config(noreplace) %verify(not md5 mtime size) /var/log/crossfire
 %dir %{_libdir}/crossfire
 %dir %{_libdir}/crossfire/plugins
 %attr(755,root,root) %{_libdir}/crossfire/add_throw.perl

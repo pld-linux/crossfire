@@ -3,8 +3,8 @@ Summary(pl):	Serwer gry roguelike dla wielu graczy
 Name:		crossfire
 Version:	1.6.0
 Release:	2
-Group:		Applications/Games
 License:	GPL
+Group:		Applications/Games
 Source0:	http://dl.sourceforge.net/crossfire/%{name}-%{version}.tar.gz
 # Source0-md5:	cac617806c2430821f8bd918726a66e1
 Source1:	%{name}.init
@@ -17,8 +17,10 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	python-devel >= 1:2.3
+BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	crossfire-maps
+Requires:	rc-scripts
 %pyrequires_eq  python
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -108,17 +110,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add crossfire
-if [ -r /var/lock/subsys/crossfire ]; then
-	/etc/rc.d/init.d/crossfire restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/crossfire start\" to start Crossfire server."
-fi
+%service crossfire restart "Crossfire server"
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -r /var/lock/subsys/crossfire ]; then
-		/etc/rc.d/init.d/crossfire stop >&2
-	fi
+	%service crossfire stop
 	/sbin/chkconfig --del crossfire
 fi
 

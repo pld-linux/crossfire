@@ -1,0 +1,3 @@
+- %defattr for doc subpackage
+- include clockdata file and directory for map overlays
+- don't unzip %{SOURCE1}. It is not the same file as it used to be :-)

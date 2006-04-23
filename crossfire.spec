@@ -1,3 +1,5 @@
+# TODO
+# - CVE-2006-1010 http://security.gentoo.org/glsa/glsa-200604-11.xml
 Summary:	Multiplayer roguelike game server
 Summary(pl):	Serwer gry roguelike dla wielu graczy
 Name:		crossfire

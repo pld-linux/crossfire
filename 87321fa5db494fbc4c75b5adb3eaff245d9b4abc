@@ -1,0 +1,5 @@
+- do not use crossloop to start server (crossloop patch not needed anymore)
+- map editor separated
+- logs go to file /var/log/crossfire instead of directory
+- more docs
+- %config and %noreplace on files in /var

@@ -58,7 +58,7 @@ Edytor map Crossfire.
 %package doc
 Summary:	Crossfire game documentation
 Summary(pl):	Dokumentacja gry Crossfire
-Group:		Applications/Games
+Group:		Documentation
 
 %description doc
 Crossfire documentation for players. Includes handbook and spoiler.

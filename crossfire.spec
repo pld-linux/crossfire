@@ -1,22 +1,25 @@
-# TODO
-# - CVE-2006-1010 http://security.gentoo.org/glsa/glsa-200604-11.xml
 Summary:	Multiplayer roguelike game server
-Summary(pl):	Serwer gry roguelike dla wielu graczy
+Summary(pl.UTF-8):   Serwer gry roguelike dla wielu graczy
 Name:		crossfire
-Version:	1.6.0
-Release:	2
+Version:	1.9.1
+Release:	1
 License:	GPL
 Group:		Applications/Games
 Source0:	http://dl.sourceforge.net/crossfire/%{name}-%{version}.tar.gz
-# Source0-md5:	cac617806c2430821f8bd918726a66e1
+# Source0-md5:	9444daefe1a457b4a18101c255be6cdc
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
-Patch0:		%{name}-python2.3.patch
+Patch0:		%{name}-ac260.patch
+Patch1:		%{name}-check.patch
+Patch2:		%{name}-daemon.patch
 URL:		http://crossfire.real-time.com/
-BuildRequires:	XFree86-devel
+BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xorg-lib-libXaw-devel
+BuildRequires:	xorg-lib-libXmu-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	cproto
 BuildRequires:	libtool
 BuildRequires:	python-devel >= 1:2.3
 BuildRequires:	rpmbuild(macros) >= 1.268
@@ -40,54 +43,71 @@ Any number of players can move around in their own window, finding and
 sing items and battle monsters. They can choose to cooperate or
 compete in the same "world".
 
-%description -l pl
-To jest graficzna gra przygodowa dla ¶rodowiska X-Window. S± tak¿e
-dostêpni klienci pod Windows i w Javie.
+%description -l pl.UTF-8
+To jest graficzna gra przygodowa dla Å›rodowiska X-Window. SÄ… takÅ¼e
+dostÄ™pni klienci pod Windows i w Javie.
 
 %package editor
 Summary:	Crossfire map editor
-Summary(pl):	Edytor map Crossfire
+Summary(pl.UTF-8):   Edytor map Crossfire
 Group:		Applications/Games
 
 %description editor
 Crossfire map editor.
 
-%description editor -l pl
+%description editor -l pl.UTF-8
 Edytor map Crossfire.
 
 %package doc
 Summary:	Crossfire game documentation
-Summary(pl):	Dokumentacja gry Crossfire
+Summary(pl.UTF-8):   Dokumentacja gry Crossfire
 Group:		Documentation
 
 %description doc
 Crossfire documentation for players. Includes handbook and spoiler.
 
-%description doc -l pl
-Dokumentacja dla graczy Crossfire. Zawiera podrêcznik oraz spoiler.
+%description doc -l pl.UTF-8
+Dokumentacja dla graczy Crossfire. Zawiera podrÄ™cznik oraz spoiler.
 
 %package plugin-python
 Summary:	Python plugin for Crossfire server
-Summary(pl):	Wtyczka Pythona dla serwera Crossfire
+Summary(pl.UTF-8):   Wtyczka Pythona dla serwera Crossfire
 Group:		Applications/Games
 Requires:	%{name} = %{version}-%{release}
 
 %description plugin-python
 Python plugin for Crossfire server.
 
-%description plugin-python -l pl
+%description plugin-python -l pl.UTF-8
 Wtyczka Pythona dla serwera Crossfire.
+
+%package plugin-anim
+Summary:	Animation plugin for Crossfire server
+Summary(pl.UTF-8):   Wtyczka animacji dla serwera Crossfire
+Group:		Applications/Games
+Requires:	%{name} = %{version}-%{release}
+
+%description plugin-anim
+Animation plugin for Crossfire server.
+
+%description plugin-anim -l pl.UTF-8
+Wtyczka animacji dla serwera Crossfire.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch0 -p1 -b .wiget
+%patch1 -p1 -b .wig
+%patch2 -p1 -b .wig2
 
 %build
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
 %{__automake}
+touch include/autoconf.h{,.in}
 %configure
+install -d test/include
+%{__make} -C test/toolkit proto
 %{__make}
 
 %install
@@ -98,7 +118,7 @@ install -d $RPM_BUILD_ROOT{/var/log,/etc/{sysconfig,%{name},logrotate.d},/etc/rc
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm $RPM_BUILD_ROOT%{_libdir}/crossfire/plugins/plugin_python.a
+rm $RPM_BUILD_ROOT%{_libdir}/crossfire/plugins/*.a
 rm $RPM_BUILD_ROOT%{_bindir}/crossloop*
 rm $RPM_BUILD_ROOT%{_mandir}/*/crossloop*
 rm $RPM_BUILD_ROOT%{_bindir}/player_dl.pl
@@ -167,4 +187,8 @@ fi
 
 %files plugin-python
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/crossfire/plugins/plugin_python.*
+%attr(755,root,root) %{_libdir}/crossfire/plugins/cfpython.*
+
+%files plugin-anim
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/crossfire/plugins/cfanim.*

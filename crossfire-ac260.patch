@@ -1,0 +1,141 @@
+--- crossfire-1.9.1/acinclude.m4.wiget	2006-06-29 09:25:33.000000000 +0200
++++ crossfire-1.9.1/acinclude.m4	2007-02-03 23:43:47.000000000 +0100
+@@ -6,7 +6,8 @@
+ 	PY_INCLUDES=""
+ 	dir=""
+ 	if test "x$PYTHON_HOME" != "x"; then
+-		for dir in $PYTHON_HOME/include/python{,2.5,2.4,2.3,2.2,2.1,2.0} ; do
++		for pyver in "" 2.5 2.4 2.3 2.2 2.1 2.0 ; do
++			dir=$PYTHON_HOME/include/python${pyver}
+ 			AC_CHECK_HEADERS(["$dir/Python.h"],[cf_have_python_h=yes])
+ 			if test "x$cf_have_python_h" != "x" ; then
+ 				PY_INCLUDES="-I$dir"
+@@ -16,16 +17,21 @@
+ 		PYTHON_SEARCH=$PYTHON
+ 	else
+ 		AC_CHECK_HEADERS([Python.h],[cf_have_python_h=yes])
++                PY_INCLUDES=""	
+ 		if test "x$cf_have_python_h" = "x"  ; then
+-			for dir in  /usr{,/local}/include/python{,2.5,2.4,2.3,2.2,2.1,2.0} ; do
++			for ldir in  "" /local ; do
++			for pyver in  "" 2.5 2.4 2.3 2.2 2.1 2.0 ; do
++				dir=/usr${ldir}/include/python${pyver}
+ 				AC_CHECK_HEADERS(["$dir/Python.h"],[cf_have_python_h=yes])
+ 				if test "x$cf_have_python_h" != "x" ; then
+ 					PY_INCLUDES="-I$dir"
+ 					break
+ 				fi
+ 			done
+-		else
+-			PY_INCLUDES=""
++                        if test "x$PY_INCLUDES" != "x" ; then
++                                break
++                        fi
++			done
+ 		fi
+ 	fi
+ 
+@@ -61,8 +67,8 @@
+ 			fi
+ 
+ 		else
+-	                for lib in python{,2.5,2.4,2.3,2.2,2.1,2.0} ; do
+-	                        AC_CHECK_LIB($lib, PyArg_ParseTuple,[PYTHON_LIB="-l$lib"])
++	                for pyver in "" 2.5 2.4 2.3 2.2 2.1 2.0 ; do
++	                        AC_CHECK_LIB(python$pyver, PyArg_ParseTuple,[PYTHON_LIB="-lpython$pyver"])
+ 	                        if test "x$PYTHON_LIB" != "x" ; then
+ 	                                break
+ 	                        fi
+@@ -374,9 +380,9 @@
+ EOF
+     AC_MSG_CHECKING([xslt compliance of $1])
+     to_run=$1
+-    to_run=${to_run/\%1/configtest.xml}
+-    to_run=${to_run/\%2/configtest.xsl}
+-    to_run=${to_run/\%3/configtest.out}
++    to_run="$(echo $to_run|sed -e 's/\%1/configtest.xml/')"
++    to_run="$(echo $to_run|sed -e 's/\%2/configtest.xsl/')"
++    to_run="$(echo $to_run|sed -e 's/\%3/configtest.out/')"
+     if AC_TRY_COMMAND([$to_run]);then
+     	AC_MSG_RESULT([yes]);
+         [$2]
+--- crossfire-1.9.1/check-fragment.am.wiget	2007-02-04 00:00:02.000000000 +0100
++++ crossfire-1.9.1/check-fragment.am	2007-02-04 00:06:01.000000000 +0100
+@@ -16,8 +16,8 @@
+ 	echo '<?xml version="1.0"?><menu>' > $$output_menu; \
+ 	echo '<parentMenu>$(CHECK_PARENT_NAME)</parentMenu>' >> $$output_menu;\
+ 	for tst in $$list; do \
+-	  tst=$${tst/check_/} ; \
+-	  tst=$${tst/-/_} ; \
++	  tst=$$(echo $$tst|sed -e 's/check_//') ; \
++	  tst=$$(echo $$tst|sed -e'/-/_/') ; \
+ 	  xml=$(LOGDIR)/$${tst}.xml ;\
+ 	  if test -e "$$xml"; then \
+ 	      successCount=`grep -c 'result="success"' $$xml`;\
+@@ -39,14 +39,14 @@
+ 	srcdir='$(top_srcdir)'; \
+ 	xsl=$${srcdir}/test/templates/logresult.xsl ; \
+ 	xsltproc='$(XSLTENGINE)';\
+-	xsltproc=$${xsltproc/\%2/$$xsl};\
++	xsltproc=$$(echo $$xsltproc|sed -e "/\%2/$$xsl/");\
+ 	xml_siteuri='$(CHECK_ROOT)' ;\
+ 	xml_check_folder='../logs/$(CHECK_FOLDER)' ;\
+ 	runxml='.autorun.xml';\
+ 	if test -n "$$list"; then \
+ 	  for tst in $$list; do \
+-	    tst=$${tst/check_/} ; \
+-	    tst=$${tst/-/_} ; \
++	    tst=$$(echo $$tst|sed -e "s/check_//") ; \
++	    tst=$$(echo $$tst|sed -e "/-/_/") ; \
+ 	    checkFile=$${tst}.xml ;\
+ 	    echo '<?xml version="1.0"?><config>' > $$runxml;\
+ 	    echo "<baseSiteUri>$$xml_siteuri</baseSiteUri>" >> $$runxml;\
+@@ -54,8 +54,8 @@
+ 	    echo "<checkFolder>$$xml_check_folder</checkFolder></config>" >> $$runxml;\
+ 	    html=$(LOGDIR)/$${tst}.html ;\
+ 	    if test -e "$(LOGDIR)/$$xml"; then \
+-	        torun=$${xsltproc/\%1/$$runxml};\
+-	        torun=$${torun/\%3/$$html};\
++	        torun=$$(echo $$xsltproc|sed -e "/\%1/$$runxml/");\
++	        torun=$$(echo $$torun|sed -e "s/\%3/$$html/");\
+ 	        echo "running $$torun";\
+ 	        $$torun; \
+ 	    fi; \
+@@ -65,8 +65,8 @@
+ 	echo "<baseSiteUri>$$xml_siteuri</baseSiteUri>" >> $$runxml;\
+ 	echo "<checkFolder>$$xml_check_folder</checkFolder></config>" >> $$runxml;\
+ 	html=$(LOGDIR)/.index.html ;\
+-	torun=$${xsltproc/\%1/$$runxml};\
+-	torun=$${torun/\%3/$$html};\
++	torun=$$(echo $$xsltproc|sed -e "s/\%1/$$runxml/");\
++	torun=$$(echo $$torun|sed -e "s/\%3/$$html/');\
+ 	echo "running $$torun";\
+ 	$$torun;
+ template-copy: $(LOGDIR)
+@@ -79,7 +79,7 @@
+ 	@srcdir='$(top_srcdir)'; \
+ 	xsl=$${srcdir}/test/templates/checkTextResult.xsl ; \
+ 	xsltproc='$(XSLTENGINE)';\
+-	xsltproc=$${xsltproc/\%2/$$xsl};\
++	xsltproc=$$(echo $$xsltproc|sed -e "s/\%2/$$xsl/");\
+ 	xml_siteuri='$(CHECK_ROOT)' ;\
+ 	xml_check_folder='../logs/$(CHECK_FOLDER)' ;\
+ 	runxml='.autorun.xml';\
+@@ -87,8 +87,8 @@
+ 	echo "<baseSiteUri>$$xml_siteuri</baseSiteUri>" >> $$runxml;\
+ 	echo "<checkFolder>$$xml_check_folder</checkFolder></config>" >> $$runxml;\
+ 	txt=$(LOGDIR)/testlog.txt ;\
+-	torun=$${xsltproc/\%1/$$runxml};\
+-	torun=$${torun/\%3/$$txt};\
++	torun=$$(echo $$xsltproc|sed -e "s/\%1/$$runxml/");\
++	torun=$$(echo $$torun|sed -e "s/\%3/$$txt/");\
+ 	echo "running $$torun";\
+ 	$$torun;
+ 
+@@ -100,4 +100,4 @@
+ check-text: $(CHECK_TXT)
+ clean-unit:
+ 	rm -f autorun.xml
+-noinst_PROGRAMS=$(TESTS)
+\ Brak znaku nowej linii na końcu pliku
++noinst_PROGRAMS=$(TESTS)

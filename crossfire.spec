@@ -95,9 +95,9 @@ Wtyczka animacji dla serwera Crossfire.
 
 %prep
 %setup -q
-%patch0 -p1 -b .wiget
-%patch1 -p1 -b .wig
-%patch2 -p1 -b .wig2
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}

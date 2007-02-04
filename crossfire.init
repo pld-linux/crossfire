@@ -42,7 +42,7 @@ case "$1" in
 			FLAGS="$FLAGS +d"
 		fi
 		msg_starting crossfire
-		daemon su games -c "\"exec crossfire -detach $FLAGS >>/var/log/crossfire 2>&1\""
+		daemon su games -s /bin/sh -c "\"exec crossfire -detach $FLAGS >>/var/log/crossfire 2>&1\""
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/crossfire
 	else

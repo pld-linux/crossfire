@@ -1,0 +1,11 @@
+--- crossfire-1.9.1/test/unit/crossedit/check_stubs.c.wig	2007-02-03 23:42:27.000000000 +0100
++++ crossfire-1.9.1/test/unit/crossedit/check_stubs.c	2007-02-03 23:42:41.000000000 +0100
+@@ -68,7 +68,7 @@
+   Suite *s = stubs_suite();
+   SRunner *sr = srunner_create(s);
+   srunner_set_xml(sr,LOGDIR "/unit/crossedit/stubs.xml");
+-  srunner_set_out(sr,LOGDIR "/unit/crossedit/stubs.out");
++  srunner_set_log(sr,LOGDIR "/unit/crossedit/stubs.out");
+   srunner_run_all(sr, CK_ENV); /*verbosity from env variable*/
+   nf = srunner_ntests_failed(sr);
+   srunner_free(sr);

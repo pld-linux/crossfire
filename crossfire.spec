@@ -1,5 +1,5 @@
 Summary:	Multiplayer roguelike game server
-Summary(pl.UTF-8):   Serwer gry roguelike dla wielu graczy
+Summary(pl.UTF-8):	Serwer gry roguelike dla wielu graczy
 Name:		crossfire
 Version:	1.9.1
 Release:	2
@@ -49,7 +49,7 @@ dostępni klienci pod Windows i w Javie.
 
 %package editor
 Summary:	Crossfire map editor
-Summary(pl.UTF-8):   Edytor map Crossfire
+Summary(pl.UTF-8):	Edytor map Crossfire
 Group:		Applications/Games
 
 %description editor
@@ -60,7 +60,7 @@ Edytor map Crossfire.
 
 %package doc
 Summary:	Crossfire game documentation
-Summary(pl.UTF-8):   Dokumentacja gry Crossfire
+Summary(pl.UTF-8):	Dokumentacja gry Crossfire
 Group:		Documentation
 
 %description doc
@@ -71,7 +71,7 @@ Dokumentacja dla graczy Crossfire. Zawiera podręcznik oraz spoiler.
 
 %package plugin-python
 Summary:	Python plugin for Crossfire server
-Summary(pl.UTF-8):   Wtyczka Pythona dla serwera Crossfire
+Summary(pl.UTF-8):	Wtyczka Pythona dla serwera Crossfire
 Group:		Applications/Games
 Requires:	%{name} = %{version}-%{release}
 
@@ -83,7 +83,7 @@ Wtyczka Pythona dla serwera Crossfire.
 
 %package plugin-anim
 Summary:	Animation plugin for Crossfire server
-Summary(pl.UTF-8):   Wtyczka animacji dla serwera Crossfire
+Summary(pl.UTF-8):	Wtyczka animacji dla serwera Crossfire
 Group:		Applications/Games
 Requires:	%{name} = %{version}-%{release}
 

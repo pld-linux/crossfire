@@ -1,5 +1,5 @@
 /var/log/squid/crossfire.log {
-	olddir /var/log/archiv
+	olddir /var/log/archive
 	weekly
 	rotate 7
 	compress

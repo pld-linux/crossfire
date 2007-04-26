@@ -1,0 +1,3 @@
+- Version: 1.6.0 [fixes CVE-2006-1010]
+- write access for games group on /var/lib/crossfire directory - python scripts
+  included in maps create files there

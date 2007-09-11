@@ -27,7 +27,7 @@ Requires(post,preun):	/sbin/chkconfig
 Requires:	crossfire-maps
 Requires:	rc-scripts
 %pyrequires_eq  python
-Conflicts:	logrotate < 3.7.4
+Conflicts:	logrotate < 3.7-4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_localstatedir	/var/lib

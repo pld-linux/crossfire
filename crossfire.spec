@@ -24,9 +24,9 @@ BuildRequires:	libtool
 BuildRequires:	python-devel >= 1:2.3
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
+%pyrequires_eq	python
 Requires:	crossfire-maps
 Requires:	rc-scripts
-%pyrequires_eq  python
 Conflicts:	logrotate < 3.7-4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 

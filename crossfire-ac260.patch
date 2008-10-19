@@ -5,7 +5,7 @@
  	dir=""
  	if test "x$PYTHON_HOME" != "x"; then
 -		for dir in $PYTHON_HOME/include/python{,2.5,2.4,2.3,2.2,2.1,2.0} ; do
-+		for pyver in "" 2.5 2.4 2.3 2.2 2.1 2.0 ; do
++		for pyver in "" 2.6 2.5 2.4 2.3 2.2 2.1 2.0 ; do
 +			dir=$PYTHON_HOME/include/python${pyver}
  			AC_CHECK_HEADERS(["$dir/Python.h"],[cf_have_python_h=yes])
  			if test "x$cf_have_python_h" != "x" ; then
@@ -18,7 +18,7 @@
  		if test "x$cf_have_python_h" = "x"  ; then
 -			for dir in  /usr{,/local}/include/python{,2.5,2.4,2.3,2.2,2.1,2.0} ; do
 +			for ldir in  "" /local ; do
-+			for pyver in  "" 2.5 2.4 2.3 2.2 2.1 2.0 ; do
++			for pyver in  "" 2.6 2.5 2.4 2.3 2.2 2.1 2.0 ; do
 +				dir=/usr${ldir}/include/python${pyver}
  				AC_CHECK_HEADERS(["$dir/Python.h"],[cf_have_python_h=yes])
  				if test "x$cf_have_python_h" != "x" ; then
@@ -41,7 +41,7 @@
  		else
 -	                for lib in python{,2.5,2.4,2.3,2.2,2.1,2.0} ; do
 -	                        AC_CHECK_LIB($lib, PyArg_ParseTuple,[PYTHON_LIB="-l$lib"])
-+	                for pyver in "" 2.5 2.4 2.3 2.2 2.1 2.0 ; do
++	                for pyver in "" 2.6 2.5 2.4 2.3 2.2 2.1 2.0 ; do
 +	                        AC_CHECK_LIB(python$pyver, PyArg_ParseTuple,[PYTHON_LIB="-lpython$pyver"])
  	                        if test "x$PYTHON_LIB" != "x" ; then
  	                                break

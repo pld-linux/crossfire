@@ -14,15 +14,16 @@ Patch0:		%{name}-ac260.patch
 Patch1:		%{name}-check.patch
 Patch2:		%{name}-daemon.patch
 URL:		http://crossfire.real-time.com/
-BuildRequires:	xorg-lib-libX11-devel
-BuildRequires:	xorg-lib-libXaw-devel
-BuildRequires:	xorg-lib-libXmu-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	check
 BuildRequires:	cproto
 BuildRequires:	libtool
 BuildRequires:	python-devel >= 1:2.3
 BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xorg-lib-libXaw-devel
+BuildRequires:	xorg-lib-libXmu-devel
 Requires(post,preun):	/sbin/chkconfig
 %pyrequires_eq	python
 Requires:	crossfire-maps

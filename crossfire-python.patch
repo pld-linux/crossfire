@@ -1,0 +1,29 @@
+--- crossfire-1.9.1/acinclude.m4~	2011-02-13 10:39:46.944104327 +0100
++++ crossfire-1.9.1/acinclude.m4	2011-02-13 10:42:41.044603409 +0100
+@@ -6,7 +6,7 @@
+ 	PY_INCLUDES=""
+ 	dir=""
+ 	if test "x$PYTHON_HOME" != "x"; then
+-		for pyver in "" 2.6 2.5 2.4 2.3 2.2 2.1 2.0 ; do
++		for pyver in "" 2.7 2.6 2.5 2.4 2.3 2.2 2.1 2.0 ; do
+ 			dir=$PYTHON_HOME/include/python${pyver}
+ 			AC_CHECK_HEADERS(["$dir/Python.h"],[cf_have_python_h=yes])
+ 			if test "x$cf_have_python_h" != "x" ; then
+@@ -20,7 +20,7 @@
+                 PY_INCLUDES=""	
+ 		if test "x$cf_have_python_h" = "x"  ; then
+ 			for ldir in  "" /local ; do
+-			for pyver in  "" 2.6 2.5 2.4 2.3 2.2 2.1 2.0 ; do
++			for pyver in  "" 2.7 2.6 2.5 2.4 2.3 2.2 2.1 2.0 ; do
+ 				dir=/usr${ldir}/include/python${pyver}
+ 				AC_CHECK_HEADERS(["$dir/Python.h"],[cf_have_python_h=yes])
+ 				if test "x$cf_have_python_h" != "x" ; then
+@@ -67,7 +67,7 @@
+ 			fi
+ 
+ 		else
+-	                for pyver in "" 2.6 2.5 2.4 2.3 2.2 2.1 2.0 ; do
++	                for pyver in "" 2.7 2.6 2.5 2.4 2.3 2.2 2.1 2.0 ; do
+ 	                        AC_CHECK_LIB(python$pyver, PyArg_ParseTuple,[PYTHON_LIB="-lpython$pyver"])
+ 	                        if test "x$PYTHON_LIB" != "x" ; then
+ 	                                break

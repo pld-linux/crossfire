@@ -2,7 +2,7 @@ Summary:	Multiplayer roguelike game server
 Summary(pl.UTF-8):	Serwer gry roguelike dla wielu graczy
 Name:		crossfire
 Version:	1.9.1
-Release:	8
+Release:	9
 License:	GPL
 Group:		X11/Applications/Games
 Source0:	http://dl.sourceforge.net/crossfire/%{name}-%{version}.tar.gz
@@ -13,6 +13,7 @@ Source3:	%{name}.logrotate
 Patch0:		%{name}-ac260.patch
 Patch1:		%{name}-check.patch
 Patch2:		%{name}-daemon.patch
+Patch3:		%{name}-python.patch
 URL:		http://crossfire.real-time.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -100,6 +101,7 @@ Wtyczka animacji dla serwera Crossfire.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__libtoolize}

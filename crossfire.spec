@@ -2,7 +2,7 @@ Summary:	Multiplayer roguelike game server
 Summary(pl.UTF-8):	Serwer gry roguelike dla wielu graczy
 Name:		crossfire
 Version:	1.9.1
-Release:	9
+Release:	10
 License:	GPL
 Group:		X11/Applications/Games
 Source0:	http://dl.sourceforge.net/crossfire/%{name}-%{version}.tar.gz
@@ -29,7 +29,7 @@ Requires(post,preun):	/sbin/chkconfig
 %pyrequires_eq	python
 Requires:	crossfire-maps
 Requires:	rc-scripts
-Conflicts:	logrotate < 3.7-4
+Conflicts:	logrotate < 3.8.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_localstatedir	/var/lib

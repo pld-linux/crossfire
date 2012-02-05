@@ -1,4 +1,5 @@
 /var/log/squid/crossfire.log {
+	su root games
 	olddir /var/log/archive
 	compress
 	create 660 root games

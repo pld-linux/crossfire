@@ -1,0 +1,11 @@
+--- crossfire-1.9.1/crossedit/png.c~	2006-03-18 08:25:12.000000000 +0100
++++ crossfire-1.9.1/crossedit/png.c	2012-02-11 00:40:51.528599356 +0100
+@@ -269,7 +269,7 @@
+ 	png_destroy_read_struct (&png_ptr, &info_ptr, NULL);
+ 	return PNGX_OUTOFMEM;
+     }
+-    if (setjmp (png_ptr->jmpbuf)) {
++    if (setjmp (png_jmpbuf(png_ptr))) {
+ 	png_destroy_read_struct (&png_ptr, &info_ptr, &end_info);
+ 	return PNGX_DATA;
+     }

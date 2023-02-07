@@ -3,9 +3,9 @@ Summary(pl.UTF-8):	Serwer gry roguelike dla wielu graczy
 Name:		crossfire
 Version:	1.9.1
 Release:	15
-License:	GPL
+License:	GPL v2+
 Group:		X11/Applications/Games
-Source0:	http://dl.sourceforge.net/crossfire/%{name}-%{version}.tar.gz
+Source0:	https://downloads.sourceforge.net/crossfire/%{name}-%{version}.tar.gz
 # Source0-md5:	9444daefe1a457b4a18101c255be6cdc
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
@@ -16,8 +16,8 @@ Patch2:		%{name}-daemon.patch
 Patch3:		%{name}-python.patch
 Patch4:		%{name}-am.patch
 Patch5:		%{name}-libpng15.patch
-URL:		http://crossfire.real-time.com/
-BuildRequires:	autoconf
+URL:		https://crossfire.real-time.com/
+BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	check
 BuildRequires:	cproto
@@ -27,6 +27,7 @@ BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXaw-devel
 BuildRequires:	xorg-lib-libXmu-devel
+BuildRequires:	xorg-lib-libXt-devel
 Requires(post,preun):	/sbin/chkconfig
 %pyrequires_eq	python
 Requires:	crossfire-maps
@@ -111,11 +112,15 @@ Wtyczka animacji dla serwera Crossfire.
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
+%{__autoheader}
 %{__automake}
 touch include/autoconf.h{,.in}
-%configure
+%configure \
+	--disable-static
+
 install -d test/include
 %{__make} -C test/toolkit proto
+
 %{__make}
 
 %install
@@ -126,13 +131,13 @@ install -d $RPM_BUILD_ROOT{/var/log,/etc/{sysconfig,%{name},logrotate.d},/etc/rc
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm $RPM_BUILD_ROOT%{_libdir}/crossfire/plugins/*.a
-rm $RPM_BUILD_ROOT%{_bindir}/crossloop*
-rm $RPM_BUILD_ROOT%{_mandir}/*/crossloop*
-rm $RPM_BUILD_ROOT%{_bindir}/player_dl.pl
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/crossfire/plugins/*.la
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/crossloop*
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/man6/crossloop*.6*
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/player_dl.pl
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
+cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
+cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
 touch $RPM_BUILD_ROOT/var/log/crossfire
 
 %clean
@@ -156,7 +161,8 @@ fi
 %attr(755,root,games) %{_bindir}/crossfire-config
 %dir %attr(750,root,games) %{_datadir}/crossfire
 %{_datadir}/crossfire/*
-%{_mandir}/man?/crossfire*
+%{_mandir}/man6/crossfire.6*
+%{_mandir}/man6/crossfire-config.6*
 %dir %attr(770,root,games) %{_localstatedir}/crossfire
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/players
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/unique-items
@@ -184,7 +190,7 @@ fi
 %defattr(644,root,root,755)
 %doc crossedit/doc/*.doc
 %attr(755,root,root) %{_bindir}/crossedit
-%{_mandir}/man?/crossedit*
+%{_mandir}/man6/crossedit.6*
 
 %files doc
 %defattr(644,root,root,755)
@@ -195,8 +201,8 @@ fi
 
 %files plugin-python
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/crossfire/plugins/cfpython.*
+%attr(755,root,root) %{_libdir}/crossfire/plugins/cfpython.so
 
 %files plugin-anim
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/crossfire/plugins/cfanim.*
+%attr(755,root,root) %{_libdir}/crossfire/plugins/cfanim.so

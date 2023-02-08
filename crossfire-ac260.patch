@@ -59,22 +59,22 @@
      if AC_TRY_COMMAND([$to_run]);then
      	AC_MSG_RESULT([yes]);
          [$2]
---- crossfire-1.9.1/check-fragment.am.wiget	2007-02-04 00:00:02.000000000 +0100
-+++ crossfire-1.9.1/check-fragment.am	2007-02-04 00:06:01.000000000 +0100
-@@ -16,8 +16,8 @@
+--- crossfire-1.10.0/check-fragment.am.wiget	2007-02-04 00:00:02.000000000 +0100
++++ crossfire-1.10.0/check-fragment.am	2007-02-04 00:06:01.000000000 +0100
+@@ -16,8 +16,8 @@ automenu:
  	echo '<?xml version="1.0"?><menu>' > $$output_menu; \
  	echo '<parentMenu>$(CHECK_PARENT_NAME)</parentMenu>' >> $$output_menu;\
  	for tst in $$list; do \
--	  tst=$${tst/check_/} ; \
--	  tst=$${tst/-/_} ; \
+-	  tst="$${tst/check_/}" ; \
+-	  tst="$${tst/-/_}" ; \
 +	  tst=$$(echo $$tst|sed -e 's/check_//') ; \
 +	  tst=$$(echo $$tst|sed -e'/-/_/') ; \
- 	  xml=$(LOGDIR)/$${tst}.xml ;\
+ 	  xml="$(LOGDIR)/$${tst}.xml" ;\
  	  if test -e "$$xml"; then \
  	      successCount=`grep -c 'result="success"' $$xml`;\
-@@ -39,14 +39,14 @@
+@@ -39,14 +39,14 @@ logreport: automenu
  	srcdir='$(top_srcdir)'; \
- 	xsl=$${srcdir}/test/templates/logresult.xsl ; \
+ 	xsl="$${srcdir}/test/templates/logresult.xsl" ; \
  	xsltproc='$(XSLTENGINE)';\
 -	xsltproc=$${xsltproc/\%2/$$xsl};\
 +	xsltproc=$$(echo $$xsltproc|sed -e "/\%2/$$xsl/");\
@@ -83,59 +83,52 @@
  	runxml='.autorun.xml';\
  	if test -n "$$list"; then \
  	  for tst in $$list; do \
--	    tst=$${tst/check_/} ; \
--	    tst=$${tst/-/_} ; \
+-	    tst="$${tst/check_/}" ; \
+-	    tst="$${tst/-/_}" ; \
 +	    tst=$$(echo $$tst|sed -e "s/check_//") ; \
 +	    tst=$$(echo $$tst|sed -e "/-/_/") ; \
- 	    checkFile=$${tst}.xml ;\
+ 	    checkFile="$${tst}.xml" ;\
  	    echo '<?xml version="1.0"?><config>' > $$runxml;\
  	    echo "<baseSiteUri>$$xml_siteuri</baseSiteUri>" >> $$runxml;\
-@@ -54,8 +54,8 @@
+@@ -54,8 +54,8 @@ logreport: automenu
  	    echo "<checkFolder>$$xml_check_folder</checkFolder></config>" >> $$runxml;\
  	    html=$(LOGDIR)/$${tst}.html ;\
  	    if test -e "$(LOGDIR)/$$xml"; then \
--	        torun=$${xsltproc/\%1/$$runxml};\
--	        torun=$${torun/\%3/$$html};\
+-	        torun="$${xsltproc/\%1/$$runxml}";\
+-	        torun="$${torun/\%3/$$html}";\
 +	        torun=$$(echo $$xsltproc|sed -e "/\%1/$$runxml/");\
 +	        torun=$$(echo $$torun|sed -e "s/\%3/$$html/");\
  	        echo "running $$torun";\
  	        $$torun; \
  	    fi; \
-@@ -65,8 +65,8 @@
+@@ -65,8 +65,8 @@ logreport: automenu
  	echo "<baseSiteUri>$$xml_siteuri</baseSiteUri>" >> $$runxml;\
  	echo "<checkFolder>$$xml_check_folder</checkFolder></config>" >> $$runxml;\
- 	html=$(LOGDIR)/.index.html ;\
--	torun=$${xsltproc/\%1/$$runxml};\
--	torun=$${torun/\%3/$$html};\
+ 	html='$(LOGDIR)/.index.html' ;\
+-	torun="$${xsltproc/\%1/$$runxml}";\
+-	torun="$${torun/\%3/$$html}";\
 +	torun=$$(echo $$xsltproc|sed -e "s/\%1/$$runxml/");\
 +	torun=$$(echo $$torun|sed -e "s/\%3/$$html/');\
  	echo "running $$torun";\
  	$$torun;
  template-copy: $(LOGDIR)
-@@ -79,7 +79,7 @@
+@@ -79,7 +79,7 @@ textlog:
  	@srcdir='$(top_srcdir)'; \
- 	xsl=$${srcdir}/test/templates/checkTextResult.xsl ; \
+ 	xsl="$${srcdir}/test/templates/checkTextResult.xsl" ; \
  	xsltproc='$(XSLTENGINE)';\
--	xsltproc=$${xsltproc/\%2/$$xsl};\
+-	xsltproc="$${xsltproc/\%2/$$xsl}";\
 +	xsltproc=$$(echo $$xsltproc|sed -e "s/\%2/$$xsl/");\
  	xml_siteuri='$(CHECK_ROOT)' ;\
  	xml_check_folder='../logs/$(CHECK_FOLDER)' ;\
  	runxml='.autorun.xml';\
-@@ -87,8 +87,8 @@
+@@ -87,8 +87,8 @@ textlog:
  	echo "<baseSiteUri>$$xml_siteuri</baseSiteUri>" >> $$runxml;\
  	echo "<checkFolder>$$xml_check_folder</checkFolder></config>" >> $$runxml;\
- 	txt=$(LOGDIR)/testlog.txt ;\
--	torun=$${xsltproc/\%1/$$runxml};\
--	torun=$${torun/\%3/$$txt};\
+ 	txt='$(LOGDIR)/testlog.txt' ;\
+-	torun="$${xsltproc/\%1/$$runxml}";\
+-	torun="$${torun/\%3/$$txt}";\
 +	torun=$$(echo $$xsltproc|sed -e "s/\%1/$$runxml/");\
 +	torun=$$(echo $$torun|sed -e "s/\%3/$$txt/");\
  	echo "running $$torun";\
  	$$torun;
  
-@@ -100,4 +100,4 @@
- check-text: $(CHECK_TXT)
- clean-unit:
- 	rm -f autorun.xml
--noinst_PROGRAMS=$(TESTS)
-\ Brak znaku nowej linii na końcu pliku
-+noinst_PROGRAMS=$(TESTS)

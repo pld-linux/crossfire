@@ -1,0 +1,22 @@
+--- crossfire-1.10.0/server/c_chat.c.orig	2007-03-19 07:48:12.000000000 +0100
++++ crossfire-1.10.0/server/c_chat.c	2023-02-08 06:14:55.912346304 +0100
+@@ -178,7 +178,7 @@ static int do_tell(object* op, char* par
+             pl->listening = original_listen;
+ 
+         /* Update last_tell value [mids 01/14/2002] */
+-        snprintf(pl->last_tell, sizeof(pl->last_tell), op->name);
++        snprintf(pl->last_tell, sizeof(pl->last_tell), "%s", op->name);
+ 
+         /* Hidden DMs get the message, but player should think DM isn't online. */
+         if (!pl->hidden || QUERY_FLAG(op, FLAG_WIZ)) {
+--- crossfire-1.10.0/server/shop.c.orig	2007-03-19 07:48:12.000000000 +0100
++++ crossfire-1.10.0/server/shop.c	2023-02-08 06:18:30.381655457 +0100
+@@ -801,7 +801,7 @@ int can_pay(object *pl) {
+                 denominations++;
+                 snprintf(coinbuf, sizeof(coinbuf), " %d %s,", coincount[i],
+                         find_archetype(coins[i])->clone.name_pl);
+-                snprintf(buf + strlen(buf), sizeof(buf) - strlen(buf), coinbuf);
++                snprintf(buf + strlen(buf), sizeof(buf) - strlen(buf), "%s", coinbuf);
+             }
+         }
+         if (denominations == 0)

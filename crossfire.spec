@@ -16,6 +16,7 @@ Patch2:		%{name}-daemon.patch
 Patch3:		%{name}-python.patch
 Patch4:		%{name}-am.patch
 Patch5:		%{name}-libpng15.patch
+Patch6:		%{name}-no-common.patch
 URL:		https://crossfire.real-time.com/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -107,6 +108,7 @@ Wtyczka animacji dla serwera Crossfire.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 %{__libtoolize}
@@ -180,10 +182,13 @@ fi
 %attr(660,root,games) %config(noreplace) %verify(not md5 mtime size) /var/log/crossfire
 %dir %{_libdir}/crossfire
 %dir %{_libdir}/crossfire/plugins
-%attr(755,root,root) %{_libdir}/crossfire/add_throw.perl
-%attr(755,root,root) %{_libdir}/crossfire/metaserver.pl
-%attr(755,root,root) %{_libdir}/crossfire/mktable.script
-%attr(755,root,root) %{_libdir}/crossfire/random_map
+%if "%{_libexecdir}" != "%{_libdir}"
+%dir %{_libexecdir}/crossfire
+%endif
+%attr(755,root,root) %{_libexecdir}/crossfire/add_throw.perl
+%attr(755,root,root) %{_libexecdir}/crossfire/metaserver.pl
+%attr(755,root,root) %{_libexecdir}/crossfire/mktable.script
+%attr(755,root,root) %{_libexecdir}/crossfire/random_map
 
 %files editor
 %defattr(644,root,root,755)

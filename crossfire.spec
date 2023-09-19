@@ -1,39 +1,34 @@
 Summary:	Multiplayer roguelike game server
 Summary(pl.UTF-8):	Serwer gry roguelike dla wielu graczy
 Name:		crossfire
-Version:	1.10.0
+Version:	1.75.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Games
 Source0:	https://downloads.sourceforge.net/crossfire/%{name}-%{version}.tar.gz
-# Source0-md5:	d56ad6cac04ea49f8b6b326b441553a3
+# Source0-md5:	7d2e39294056ad521f603dfc31c2cf7f
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
-Patch0:		%{name}-ac260.patch
-Patch1:		%{name}-format.patch
-Patch2:		%{name}-daemon.patch
-Patch3:		%{name}-python.patch
-Patch4:		%{name}-am.patch
-Patch5:		%{name}-libpng15.patch
-Patch6:		%{name}-no-common.patch
+Patch0:		python3.patch
 URL:		https://crossfire.real-time.com/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	check
 BuildRequires:	cproto
 BuildRequires:	libtool
-BuildRequires:	python-devel >= 1:2.3
+BuildRequires:	python3-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXaw-devel
 BuildRequires:	xorg-lib-libXmu-devel
 BuildRequires:	xorg-lib-libXt-devel
 Requires(post,preun):	/sbin/chkconfig
-%pyrequires_eq	python
+%pyrequires_eq	python3
 Requires:	crossfire-maps
 Requires:	rc-scripts
 Conflicts:	logrotate < 3.8.0
+Obsoletes:	crossfire-editor < 1.75.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_localstatedir	/var/lib
@@ -103,26 +98,17 @@ Wtyczka animacji dla serwera Crossfire.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
+
+%{__sed} -E -i -e '1s,#!\s*/usr/bin/env\s+python3(\s|$),#!%{__python3}\1,' \
+      utils/cfdb_convert
 
 %build
-%{__libtoolize}
-%{__aclocal}
-%{__autoconf}
-%{__autoheader}
-%{__automake}
 %configure \
+	PYTHON=%{__python3} \
+	PYTHON_LIBS="`python3-config --libs --embed`" \
 	--disable-static
 
-install -d test/include
-%{__make} -C test/toolkit proto
-
-%{__make}
+%{__make} V=1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -156,14 +142,12 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc DEVELOPERS README TODO ChangeLog
-%doc doc/{alchemy.doc,experience,metaserver,multigod,plugins}
-%attr(750,root,games) %{_bindir}/crossfire
-%attr(755,root,games) %{_bindir}/crossfire-config
+%doc AUTHORS README.rst ChangeLog
+%attr(750,root,games) %{_bindir}/crossfire-server
+%attr(755,root,games) %{_bindir}/cfdb_convert
 %dir %attr(750,root,games) %{_datadir}/crossfire
 %{_datadir}/crossfire/*
-%{_mandir}/man6/crossfire.6*
-%{_mandir}/man6/crossfire-config.6*
+%{_mandir}/man6/crossfire-server.6*
 %dir %attr(770,root,games) %{_localstatedir}/crossfire
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/players
 %dir %attr(770,root,games) %{_localstatedir}/crossfire/unique-items
@@ -182,26 +166,18 @@ fi
 %attr(660,root,games) %config(noreplace) %verify(not md5 mtime size) /var/log/crossfire
 %dir %{_libdir}/crossfire
 %dir %{_libdir}/crossfire/plugins
+%attr(755,root,root) %{_libdir}/crossfire/plugins/cfcitybell.so
+%attr(755,root,root) %{_libdir}/crossfire/plugins/citylife.so
 %if "%{_libexecdir}" != "%{_libdir}"
 %dir %{_libexecdir}/crossfire
 %endif
-%attr(755,root,root) %{_libexecdir}/crossfire/add_throw.perl
-%attr(755,root,root) %{_libexecdir}/crossfire/metaserver.pl
-%attr(755,root,root) %{_libexecdir}/crossfire/mktable.script
 %attr(755,root,root) %{_libexecdir}/crossfire/random_map
-
-%files editor
-%defattr(644,root,root,755)
-%doc crossedit/doc/*.doc
-%attr(755,root,root) %{_bindir}/crossedit
-%{_mandir}/man6/crossedit.6*
 
 %files doc
 %defattr(644,root,root,755)
 %doc doc/{handbook.ps,spoiler.ps}
-%doc doc/{PlayerStats,RunTimeCommands,SurvivalGuide}
-%doc doc/{skills.doc,spellcasters_guide_to_runes}
-%doc doc/spell-docs/{*.txt,spell-list.ps,spell-summary.ps}
+%doc doc/{stats.txt,commands.txt,survival-guide.txt}
+%doc doc/{skills.txt,runes-guide.txt}
 
 %files plugin-python
 %defattr(644,root,root,755)

@@ -1,0 +1,10 @@
+--- crossfire-1.75.0/plugins/cfpython/cfpython.c~	2021-01-05 17:53:30.000000000 +0100
++++ crossfire-1.75.0/plugins/cfpython/cfpython.c	2023-09-19 16:52:06.242248061 +0200
+@@ -60,7 +60,6 @@
+ #include <cfpython.h>
+ #include <fcntl.h>
+ #include <stdarg.h>
+-#include <node.h>
+ #include <svnversion.h>
+ 
+ CF_PLUGIN char SvnRevPlugin[] = SVN_REV;
